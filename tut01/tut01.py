@@ -1,3 +1,5 @@
+import os
+os.system("cls")
 def factorial( x):
     i =1
     fact = 1
@@ -11,3 +13,4 @@ def factorial( x):
     
 x=int(input("Enter the number whose factorial is to be found\n"))
 factorial(x)
+exit()
