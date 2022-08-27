@@ -1,16 +1,11 @@
 import os
 os.system("cls")
 def factorial( x):
-    i =1
-    fact = 1
-    if x==0:
-        print(fact)
+    if x==0 or x==1:
+        return 1
     else:
-        while i<=x:
-            fact=fact*i
-            i=i+1  
-        print(fact)
+        return x*factorial(x-1)
     
 x=int(input("Enter the number whose factorial is to be found\n"))
-factorial(x)
+print(factorial(x))
 exit()
