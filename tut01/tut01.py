@@ -1,16 +1,15 @@
 import os
 os.system("cls")
-def factorial( x):
-    i =1
-    fact = 1
-    if x==0:
-        print(fact)
-    else:
-        while i<=x:
-            fact=fact*i
-            i=i+1  
-        print(fact)
+import pandas as pd
+import numpy as np
+#importing libraries
+
+
+def octact_identification(mod=5000):
+    datain =  pd.read_csv(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut01\octant_input.csv')
+    print(datain)
     
-x=int(input("Enter the number whose factorial is to be found\n"))
-factorial(x)
-exit()
+
+
+mod=5000
+octact_identification(mod)
