@@ -112,7 +112,7 @@ def octant_identification(mod=5000):
                 elif datain.loc[pos,'Octant']==-2:
                     n2=n2+1
                 elif datain.loc[pos,'Octant']==3:
-                    p3=3+1
+                    p3=p3+1
                 elif datain.loc[pos,'Octant']==-3:
                     n3=n3+1
                 elif datain.loc[pos,'Octant']==4:
@@ -156,5 +156,4 @@ def octant_identification(mod=5000):
     #index = false do not make make columns for index values as we have no requirement of it in this case
 mod=5000 #this is user input user can change it
 octant_identification(mod)
-#calling this function to divide into sections and get a desired output file
-
+# this is to call function to divide into sections and get a desired output file
