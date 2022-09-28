@@ -210,15 +210,30 @@ def octant_transition_count(mod=5000):
         datain.loc[7+noi,'-3']='-3'
         datain.loc[7+noi,'+4']='+4'
         datain.loc[7+noi,'-4']='-4'
+        #overall transition matrix made.....
+        #now working for assigning value in it....
+        #filling 0 in overall transition matrix
+        for i in range(8+noi,16+noi):
+            datain.loc[i,'+1']=0
+            datain.loc[i,'-1']=0
+            datain.loc[i,'+2']=0
+            datain.loc[i,'-2']=0
+            datain.loc[i,'+3']=0
+            datain.loc[i,'-3']=0
+            datain.loc[i,'+4']=0
+            datain.loc[i,'-4']=0
+
         pos=19+noi #storing for position in a variable later to use in loop
         #for mod transition
         i=0
-        while i<noi:
+        while i<noi: 
             ll=i*mod
             if ((i+1)*mod)>total_size:
                 ul=total_size-1
             else:
                 ul=(i+1)*mod-1
+                #defined upper limit as ul and lower limit as ll
+            #making mod transition matrix
             datain.loc[pos,'Octant Id']="Mod Transition Count"
             datain.loc[pos+1,'Octant Id']="{}-{}".format(ll,ul)
             datain.loc[pos+1,'+1']='To'
@@ -240,8 +255,22 @@ def octant_transition_count(mod=5000):
             datain.loc[pos+8,'Octant Id']="-3"
             datain.loc[pos+9,'Octant Id']="+4"
             datain.loc[pos+10,'Octant Id']="-4"
-            pos=pos+13
+            #matrix prepared
+            #assigning 0 to the each mod matrix
+            for j in range(3+pos,11+pos):
+                datain.loc[j,'+1']=0
+                datain.loc[j,'-1']=0
+                datain.loc[j,'+2']=0
+                datain.loc[j,'-2']=0
+                datain.loc[j,'+3']=0
+                datain.loc[j,'-3']=0
+                datain.loc[j,'+4']=0
+                datain.loc[j,'-4']=0
+            pos=pos+13 #updating position for next iteration
             i=i+1
+
+        
+        #matrix made now 
         #all work done now we have desired dataframe which we need to convert in EXCEL file using the command below
         datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
