@@ -69,7 +69,11 @@ def octant_transition_count(mod=5000):
         datain.loc[0,'Octant Id']="Overall Count" #filling the columns according to output file demand
         datain.loc[1,'Octant Id']="mod {}".format(mod)
         #again filling the column but this time adding parameters in it on which the next processing depends
-        noi = math.ceil(total_size/mod) #here ceil value provides the upper bound of the floating no...e.g..7.4 have ceil value 8
+        try:
+            noi = math.ceil(total_size/mod) #here ceil value provides the upper bound of the floating no...e.g..7.4 have ceil value 8
+        except ZeroDivisionError:
+            print("Mod value should not be zero")
+
         #this will reflect no. of iterations to be performed or no. of sections in which our input file will be divided to check the count 
         i=0 #initiated for iteration
         op1=0
@@ -490,17 +494,24 @@ def octant_transition_count(mod=5000):
         
         #matrix made now 
         #all work done now we have desired dataframe which we need to convert in EXCEL file using the command below
-        datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a csv file with the name given in 'quote'
+        try:
+            datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a csv file with the name given in 'quote'
+            print("Your desired output file is ready!!! Please Check!")
+        except:
+            print("the filename which you try to overwrite..Is it open or what? if it is open I cannot overwrite..please close")
         #index = false do not make make columns for index values as we have no requirement of it in this case
-        print("Your desired output file is ready!!! Please Check!")
+        
     except FileNotFoundError:
         print("Hey...file inputed by user is not found")
+        print("Check whether the file is open somewhere")
+        
 
 from platform import python_version
 ver = python_version()
 
 if ver == "3.8.10":
     print("Correct Version Installed")
+    #checking python version
 else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
