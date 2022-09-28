@@ -228,7 +228,7 @@ def octant_transition_count(mod=5000):
         i=0
         while i<noi: 
             ll=i*mod
-            if ((i+1)*mod)>total_size:
+            if ((i+1)*mod)>=total_size:
                 ul=total_size-1
             else:
                 ul=(i+1)*mod-1
@@ -266,6 +266,224 @@ def octant_transition_count(mod=5000):
                 datain.loc[j,'-3']=0
                 datain.loc[j,'+4']=0
                 datain.loc[j,'-4']=0
+            for z in range (ll,ul+1):
+                
+                if(datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+3,'+1']+=1 #for mod transition
+                    datain.loc[8+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+3,'-1']+=1
+                    datain.loc[8+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+3,'+2']+=1
+                    datain.loc[8+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+3,'-2']+=1
+                    datain.loc[8+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+3,'+3']+=1
+                    datain.loc[8+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+3,'-3']+=1
+                    datain.loc[8+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+3,'+4']+=1
+                    datain.loc[8+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+3,'-4']+=1
+                    datain.loc[8+noi,'-4']+=1
+                #updated row corresponding to from +1 to any transition (mod or overall) 
+                #now for -1
+                if(datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+4,'+1']+=1 #for mod transition
+                    datain.loc[9+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+4,'-1']+=1
+                    datain.loc[9+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+4,'+2']+=1
+                    datain.loc[9+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+4,'-2']+=1
+                    datain.loc[9+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+4,'+3']+=1
+                    datain.loc[9+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+4,'-3']+=1
+                    datain.loc[9+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+4,'+4']+=1
+                    datain.loc[9+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+4,'-4']+=1
+                    datain.loc[9+noi,'-4']+=1
+                #updated row corresponding to from -1 to any transition (mod or overall) 
+                #now for +2
+                if(datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+5,'+1']+=1 #for mod transition
+                    datain.loc[10+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+5,'-1']+=1
+                    datain.loc[10+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+5,'+2']+=1
+                    datain.loc[10+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+5,'-2']+=1
+                    datain.loc[10+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+5,'+3']+=1
+                    datain.loc[10+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+5,'-3']+=1
+                    datain.loc[10+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+5,'+4']+=1
+                    datain.loc[10+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+5,'-4']+=1
+                    datain.loc[10+noi,'-4']+=1
+                #updated row corresponding to from +2 to any transition (mod or overall)  
+
+                #now for -2
+                if(datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+6,'+1']+=1 #for mod transition
+                    datain.loc[11+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+6,'-1']+=1
+                    datain.loc[11+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+6,'+2']+=1
+                    datain.loc[11+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+6,'-2']+=1
+                    datain.loc[11+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+6,'+3']+=1
+                    datain.loc[11+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+6,'-3']+=1
+                    datain.loc[11+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+6,'+4']+=1
+                    datain.loc[11+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+6,'-4']+=1
+                    datain.loc[11+noi,'-4']+=1
+                #updated row corresponding to from -2 to any transition (mod or overall)
+
+                #now for +3
+                if(datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+7,'+1']+=1 #for mod transition
+                    datain.loc[12+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+7,'-1']+=1
+                    datain.loc[12+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+7,'+2']+=1
+                    datain.loc[12+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+7,'-2']+=1
+                    datain.loc[12+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+7,'+3']+=1
+                    datain.loc[12+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+7,'-3']+=1
+                    datain.loc[12+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+7,'+4']+=1
+                    datain.loc[12+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+7,'-4']+=1
+                    datain.loc[12+noi,'-4']+=1
+                #updated row corresponding to from +3 to any transition (mod or overall) 
+
+                #now for -3
+                if(datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+8,'+1']+=1 #for mod transition
+                    datain.loc[13+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+8,'-1']+=1
+                    datain.loc[13+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+8,'+2']+=1
+                    datain.loc[13+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+8,'-2']+=1
+                    datain.loc[13+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+8,'+3']+=1
+                    datain.loc[13+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+8,'-3']+=1
+                    datain.loc[13+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+8,'+4']+=1
+                    datain.loc[13+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+8,'-4']+=1
+                    datain.loc[13+noi,'-4']+=1
+                #updated row corresponding to from -3 to any transition (mod or overall)     
+                #now for +4
+                if(datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+9,'+1']+=1 #for mod transition
+                    datain.loc[14+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+9,'-1']+=1
+                    datain.loc[14+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+9,'+2']+=1
+                    datain.loc[14+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+9,'-2']+=1
+                    datain.loc[14+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+9,'+3']+=1
+                    datain.loc[14+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+9,'-3']+=1
+                    datain.loc[14+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+9,'+4']+=1
+                    datain.loc[14+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+9,'-4']+=1
+                    datain.loc[14+noi,'-4']+=1
+                #updated row corresponding to from +4 to any transition (mod or overall)  
+                #now for -4
+                if(datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+10,'+1']+=1 #for mod transition
+                    datain.loc[15+noi,'+1']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+10,'-1']+=1
+                    datain.loc[15+noi,'-1']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+10,'+2']+=1
+                    datain.loc[15+noi,'+2']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+10,'-2']+=1
+                    datain.loc[15+noi,'-2']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+10,'+3']+=1
+                    datain.loc[15+noi,'+3']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+10,'-3']+=1
+                    datain.loc[15+noi,'-3']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+10,'+4']+=1
+                    datain.loc[15+noi,'+4']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+10,'-4']+=1
+                    datain.loc[15+noi,'-4']+=1
+                    #updated row corresponding to from -4 to any transition (mod or overall)  
+                if(z==total_size-2):
+                    break   
+                    #here we used break statement because we need to traverse to total no. of rows minus 1 because indexing in python is from zero
+                    #and due to this last element of row will be at index total size -1
+                    #and we need to traverse to 2nd last row only so breaking loop at 2nd last element
+                
             pos=pos+13 #updating position for next iteration
             i=i+1
 
@@ -274,6 +492,7 @@ def octant_transition_count(mod=5000):
         #all work done now we have desired dataframe which we need to convert in EXCEL file using the command below
         datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
+        print("Your desired output file is ready!!! Please Check!")
     except FileNotFoundError:
         print("Hey...file inputed by user is not found")
 
