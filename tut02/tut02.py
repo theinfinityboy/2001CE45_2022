@@ -73,6 +73,7 @@ def octant_transition_count(mod=5000):
             noi = math.ceil(total_size/mod) #here ceil value provides the upper bound of the floating no...e.g..7.4 have ceil value 8
         except ZeroDivisionError:
             print("Mod value should not be zero")
+            exit()
 
         #this will reflect no. of iterations to be performed or no. of sections in which our input file will be divided to check the count 
         i=0 #initiated for iteration
