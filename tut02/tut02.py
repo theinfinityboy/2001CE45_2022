@@ -42,14 +42,14 @@ def octant_transition_count(mod=5000):
         datain.loc[0,'V_Avg']=V_Avg
         datain.loc[0,'W_Avg']=W_Avg
         #storing the values of avg valocity in 1st row or 0 indexed row
-        datain['U-U_Avg']=datain['U']-U_Avg
-        datain['V-V_Avg']=datain['V']-V_Avg
-        datain['W-W_Avg']=datain['W']-W_Avg
+        datain["U'=U-U_Avg"]=datain['U']-U_Avg
+        datain["V'=V-V_Avg"]=datain['V']-V_Avg
+        datain["W'=W-W_Avg"]=datain['W']-W_Avg
         #three more columns have been made and assigned value as V-Vavg.....corresponding name and corresponding columns
         datain['Octant']=np.nan #created a blank column named octant for which operation is to be done
         i=0 #initiating for loop variable
         while i<total_size: #loop is run for whole column size of input column file
-            datain.loc[i,'Octant']=check_octant(datain.loc[i,'U-U_Avg'],datain.loc[i,'V-V_Avg'],datain.loc[i,'W-W_Avg'])
+            datain.loc[i,'Octant']=check_octant(datain.loc[i,"U'=U-U_Avg"],datain.loc[i,"V'=V-V_Avg"],datain.loc[i,"W'=W-W_Avg"])
             #octant column is assigned octant value after chehking value of octant by calling function
             i=i+1 #updating loop
 
