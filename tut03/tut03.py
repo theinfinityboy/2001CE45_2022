@@ -5,6 +5,7 @@ import numpy as np
 import math
 #importing libraries
 os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut03')
+#current directory location
 def check_octant(x,y,z):
     #this function will check for the octant
         #first it will check for quadrant
@@ -187,7 +188,7 @@ def octant_longest_subsequence_count():
         datain.loc[7,'Longest Subsequence Length']=scn4
         datain.loc[7,'Count']=cn4 #assigning count of longest subs. value corresponding to -ve 4
         try:
-            datain.to_excel('output_octant_longest_subsequence.xlsx',index=False)# it makes a csv file with the name given in 'quote'
+            datain.to_excel('output_octant_longest_subsequence.xlsx',index=False)# it makes a excel file with the name given in 'quote'
             print("Your desired output file is ready!!! Please Check!")
         except:
             print("the filename which you try to overwrite..Is it open or what? if it is open I cannot overwrite..please close")
@@ -195,9 +196,7 @@ def octant_longest_subsequence_count():
     except FileNotFoundError:
         print("Hey...filename inputed by user is not found")
     
-
 ###Code
-
 from platform import python_version
 ver = python_version()
 
@@ -206,5 +205,4 @@ if ver == "3.8.10":
 else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
-
-octant_longest_subsequence_count()
+octant_longest_subsequence_count() #calling function to get desired result

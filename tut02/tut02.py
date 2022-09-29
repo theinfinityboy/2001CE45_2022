@@ -496,7 +496,7 @@ def octant_transition_count(mod=5000):
         #matrix made now 
         #all work done now we have desired dataframe which we need to convert in EXCEL file using the command below
         try:
-            datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a csv file with the name given in 'quote'
+            datain.to_excel('output_octant_transition_identify.xlsx',index=False)# it makes a excel file with the name given in 'quote'
             print("Your desired output file is ready!!! Please Check!")
         except:
             print("the filename which you try to overwrite..Is it open or what? if it is open I cannot overwrite..please close")
