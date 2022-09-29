@@ -77,7 +77,9 @@ def octant_longest_subsequence_count():
                     scp1=count #updating subsequent longest  count 
                     cp1=1 #assigning value as 1 because of new longest subsequent count
                 elif (count==scp1):
-                    cp1+=1
+                    cp1+=1 #updating count value of subsequent longest count in case of same subs. long. count
+                    ################
+                    #after this same code has been done for all the octanct type occurence so no comment needed till code line 166
             elif(datain.loc[i,'Octant']==-1):
                 count=0
                 while (datain.loc[i,'Octant']==-1):
