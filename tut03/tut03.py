@@ -164,7 +164,11 @@ def octant_longest_subsequence_count():
                     cn4=1
                 elif (count==scn4):
                     cn4+=1
-            i=i-1
+            i=i-1 #this substraction in the row has been done because of an extra addition of row while checking the repitition
+            #in the octant and in case of failing of repitition condition row will gone to another position already
+            #we know about loop condition after each iteration it increases its loop by doing one iteration operation
+            #so on adding 1 we will actually jump two row but we need to jump only one row
+            #1 has been substracted to have no skipped row to get correct result
         datain.loc[0,'Longest Subsequence Length']=scp1
         datain.loc[0,'Count']=cp1
         datain.loc[1,'Longest Subsequence Length']=scn1
