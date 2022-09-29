@@ -169,22 +169,23 @@ def octant_longest_subsequence_count():
             #we know about loop condition after each iteration it increases its loop by doing one iteration operation
             #so on adding 1 we will actually jump two row but we need to jump only one row
             #1 has been substracted to have no skipped row to get correct result
-        datain.loc[0,'Longest Subsequence Length']=scp1
-        datain.loc[0,'Count']=cp1
+            ###till here done#######
+        datain.loc[0,'Longest Subsequence Length']=scp1 #assigning longest subsequent value corresponding to positive 1 octant value
+        datain.loc[0,'Count']=cp1 #assigning count of longest subs. value corresponding to +ve 1
         datain.loc[1,'Longest Subsequence Length']=scn1
-        datain.loc[1,'Count']=cn1
+        datain.loc[1,'Count']=cn1 #assigning count of longest subs. value corresponding to -ve 1
         datain.loc[2,'Longest Subsequence Length']=scp2
-        datain.loc[2,'Count']=cp2
+        datain.loc[2,'Count']=cp2 #assigning count of longest subs. value corresponding to +ve 2
         datain.loc[3,'Longest Subsequence Length']=scn2
-        datain.loc[3,'Count']=cn2
+        datain.loc[3,'Count']=cn2 #assigning count of longest subs. value corresponding to -ve 2
         datain.loc[4,'Longest Subsequence Length']=scp3
-        datain.loc[4,'Count']=cp3
+        datain.loc[4,'Count']=cp3 #assigning count of longest subs. value corresponding to +ve 3
         datain.loc[5,'Longest Subsequence Length']=scn3
-        datain.loc[5,'Count']=cn3
+        datain.loc[5,'Count']=cn3 #assigning count of longest subs. value corresponding to -ve 3
         datain.loc[6,'Longest Subsequence Length']=scp4
-        datain.loc[6,'Count']=cp4
+        datain.loc[6,'Count']=cp4 #assigning count of longest subs. value corresponding to +ve 4
         datain.loc[7,'Longest Subsequence Length']=scn4
-        datain.loc[7,'Count']=cn4
+        datain.loc[7,'Count']=cn4 #assigning count of longest subs. value corresponding to -ve 4
         try:
             datain.to_excel('output_octant_longest_subsequence.xlsx',index=False)# it makes a csv file with the name given in 'quote'
             print("Your desired output file is ready!!! Please Check!")
