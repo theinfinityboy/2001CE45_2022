@@ -220,12 +220,69 @@ def octant_longest_subsequence_count_with_range():
         datain['Octant Id2']=np.nan
         datain['Longest Subsquence Length2']=np.nan
         datain['Count2']=np.nan
+        #making desired matrix for +1
         datain.loc[0,'Octant Id2']='+1'
         datain.loc[1,'Octant Id2']='Time'
         datain.loc[0,'Longest Subsquence Length2']=scp1
         datain.loc[1,'Longest Subsquence Length2']='From'
         datain.loc[0,'Count2']=cp1
         datain.loc[1,'Count2']='To'
+        #making desired matrix for filling the time range of -1
+        datain.loc[2+cp1,'Octant Id2']='-1'
+        datain.loc[2+cp1,'Longest Subsquence Length2']=scn1
+        datain.loc[2+cp1,'Count2']=cn1
+        datain.loc[3+cp1,'Octant Id2']='Time'
+        datain.loc[3+cp1,'Longest Subsquence Length2']='From'
+        datain.loc[3+cp1,'Count2']='To'
+        #making desired matrix for filling the time range of +2
+        datain.loc[4+cp1+cn1,'Octant Id2']='+2'
+        datain.loc[4+cp1+cn1,'Longest Subsquence Length2']=scp2
+        datain.loc[4+cp1+cn1,'Count2']=cp2
+        datain.loc[5+cp1+cn1,'Octant Id2']='Time'
+        datain.loc[5+cp1+cn1,'Longest Subsquence Length2']='From'
+        datain.loc[5+cp1+cn1,'Count2']='To'
+        #making desired matrix for filling the time range of -2
+        datain.loc[6+cp1+cn1+cp2,'Octant Id2']='-2'
+        datain.loc[6+cp1+cn1+cp2,'Longest Subsquence Length2']=scn2
+        datain.loc[6+cp1+cn1+cp2,'Count2']=cn2
+        datain.loc[7+cp1+cn1+cp2,'Octant Id2']='Time'
+        datain.loc[7+cp1+cn1+cp2,'Longest Subsquence Length2']='From'
+        datain.loc[7+cp1+cn1+cp2,'Count2']='To'
+        #making desired matrix for filling the time range of +3
+        datain.loc[8+cp1+cn1+cp2+cn2,'Octant Id2']='+3'
+        datain.loc[8+cp1+cn1+cp2+cn2,'Longest Subsquence Length2']=scp3
+        datain.loc[8+cp1+cn1+cp2+cn2,'Count2']=cp3
+        datain.loc[9+cp1+cn1+cp2+cn2,'Octant Id2']='Time'
+        datain.loc[9+cp1+cn1+cp2+cn2,'Longest Subsquence Length2']='From'
+        datain.loc[9+cp1+cn1+cp2+cn2,'Count2']='To'
+        #making desired matrix for filling the time range of -3
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Octant Id2']='-3'
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length2']=scn3
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Count2']=cn3
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Octant Id2']='Time'
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length2']='From'
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Count2']='To'
+        #making desired matrix for filling the time range of +4
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Octant Id2']='+4'
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length2']=scp4
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Count2']=cp4
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Octant Id2']='Time'
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length2']='From'
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Count2']='To'
+        #making desired matrix for filling the time range of -4
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant Id2']='-4'
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length2']=scn4
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Count2']=cn4
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant Id2']='Time'
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length2']='From'
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Count2']='To'
+
+        ##############################################################################
+        #till here matrix done
+        #now working for matrix filling
+
+
+
 
 
 
