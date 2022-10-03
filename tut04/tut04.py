@@ -313,13 +313,13 @@ def octant_longest_subsequence_count_with_range():
             datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Count2']=datain.at[listn4[c],'Time'] #upper limit time i.e. to
             datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Longest Subsquence Length2']=datain.at[1+listn4[c]-scn4,'Time'] #lower limit time i. e. from
         #code written for desired work now converting dataframe to excel file
-        try:
+        try:  #this is try and except block
             datain.to_excel('output_octant_longest_subsequence_with_range.xlsx',index=False)# it makes a excel file with the name given in 'quote'
             print("Your desired output file is ready!!! Please Check!")
         except:
             print("the filename which you try to overwrite..Is it open or what? if it is open I cannot overwrite..please close")
                 #index = false do not make make columns for index values as we have no requirement of it in this case    
-    except FileNotFoundError:
+    except FileNotFoundError: #this is except block of try and except.............3
         print("Hey...filename inputed by user is not found")
     
 ###Code
