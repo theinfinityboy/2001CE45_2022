@@ -86,6 +86,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scp1):
                     scp1=count #updating subsequent longest  count 
                     cp1=1 #assigning value as 1 because of new longest subsequent count
+                    listp1.clear()
                     listp1.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scp1):
                     cp1+=1 #updating count value of subsequent longest count in case of same subs. long. count
@@ -102,6 +103,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scn1):
                     scn1=count
                     cn1=1
+                    listn1.clear()
                     listn1.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scn1):
                     cn1+=1
@@ -116,6 +118,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scp2):
                     scp2=count
                     cp2=1
+                    listp2.clear()
                     listp2.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scp2):
                     cp2+=1
@@ -130,6 +133,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scn2):
                     scn2=count
                     cn2=1
+                    listn2.clear()
                     listn2.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scn2):
                     cn2+=1
@@ -144,6 +148,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scp3):
                     scp3=count
                     cp3=1
+                    listp3.clear()
                     listp3.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scp3):
                     cp3+=1
@@ -158,6 +163,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scn3):
                     scn3=count
                     cn3=1
+                    listn3.clear()
                     listn3.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scn3):
                     cn3+=1
@@ -172,6 +178,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scp4):
                     scp4=count
                     cp4=1
+                    listp4.clear()
                     listp4.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scp4):
                     cp4+=1
@@ -186,6 +193,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scn4):
                     scn4=count
                     cn4=1
+                    listn4.clear()
                     listn4.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scn4):
                     cn4+=1
@@ -280,14 +288,31 @@ def octant_longest_subsequence_count_with_range():
         ##############################################################################
         #till here matrix done
         #now working for matrix filling
-
-
-
-
-
-
-
-
+        for c in range (0,cp1):
+            datain.loc[2+c,'Count2']=datain.at[listp1[c],'Time'] #upper limit time i.e. to
+            datain.loc[2+c,'Longest Subsquence Length2']=datain.at[1+listp1[c]-scp1,'Time'] #lower limit time i. e. from
+        for c in range (0,cn1):
+            datain.loc[4+cp1+c,'Count2']=datain.at[listn1[c],'Time'] #upper limit time i.e. to
+            datain.loc[4+cp1+c,'Longest Subsquence Length2']=datain.at[1+listn1[c]-scn1,'Time'] #lower limit time i. e. from
+        for c in range (0,cp2):
+            datain.loc[6+cp1+cn1+c,'Count2']=datain.at[listp2[c],'Time'] #upper limit time i.e. to
+            datain.loc[6+cp1+cn1+c,'Longest Subsquence Length2']=datain.at[1+listp2[c]-scp2,'Time'] #lower limit time i. e. from
+        for c in range (0,cn2):
+            datain.loc[8+cp1+cn1+cp2+c,'Count2']=datain.at[listn2[c],'Time'] #upper limit time i.e. to
+            datain.loc[8+cp1+cn1+cp2+c,'Longest Subsquence Length2']=datain.at[1+listn2[c]-scn2,'Time'] #lower limit time i. e. from
+        for c in range (0,cp3):
+            datain.loc[10+cp1+cn1+cp2+cn2+c,'Count2']=datain.at[listp3[c],'Time'] #upper limit time i.e. to
+            datain.loc[10+cp1+cn1+cp2+cn2+c,'Longest Subsquence Length2']=datain.at[1+listp3[c]-scp3,'Time'] #lower limit time i. e. from
+        for c in range (0,cn3):
+            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'Count2']=datain.at[listn3[c],'Time'] #upper limit time i.e. to
+            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'Longest Subsquence Length2']=datain.at[1+listn3[c]-scn3,'Time'] #lower limit time i. e. from
+        for c in range (0,cp4):
+            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'Count2']=datain.at[listp4[c],'Time'] #upper limit time i.e. to
+            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'Longest Subsquence Length2']=datain.at[1+listp4[c]-scp4,'Time'] #lower limit time i. e. from
+        for c in range (0,cn4):
+            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Count2']=datain.at[listn4[c],'Time'] #upper limit time i.e. to
+            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Longest Subsquence Length2']=datain.at[1+listn4[c]-scn4,'Time'] #lower limit time i. e. from
+        #code written for desired work now converting dataframe to excel file
         try:
             datain.to_excel('output_octant_longest_subsequence_with_range.xlsx',index=False)# it makes a excel file with the name given in 'quote'
             print("Your desired output file is ready!!! Please Check!")
