@@ -86,7 +86,7 @@ def octant_longest_subsequence_count_with_range():
                 if(count>scp1):
                     scp1=count #updating subsequent longest  count 
                     cp1=1 #assigning value as 1 because of new longest subsequent count
-                    listp1.clear()
+                    listp1.clear() #list has been cleared in case it has any previous element which shouldn't in case of if case
                     listp1.append(i-1) #storing index of upper bound(inclusive) which will help later
                 elif (count==scp1):
                     cp1+=1 #updating count value of subsequent longest count in case of same subs. long. count
@@ -96,7 +96,7 @@ def octant_longest_subsequence_count_with_range():
             elif(datain.loc[i,'Octant']==-1):
                 count=0
                 while (datain.loc[i,'Octant']==-1):
-                    count+=1
+                    count+=1 #explained in +ve 1 coode writing all step is same as that
                     i+=1
                     if(i>=total_size):
                         break
