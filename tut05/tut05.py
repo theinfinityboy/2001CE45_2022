@@ -8,8 +8,8 @@ import math
 os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut05')
 def check_octant(x,y,z):
     #this function will check for the octant
-        #first it will check for quadrant
-        #then it will update it for the octant by looking the z values(w-w_avg for the main data)
+    #first it will check for quadrant
+    #then it will update it for the octant by looking the z values(w-w_avg for the main data)
     if x>=0 and y>=0 :
         o=1
     if x<0 and y>=0 :
@@ -46,7 +46,8 @@ def octant_range_names(mod=5000):
         datain['V-V_Avg']=datain['V']-V_Avg
         datain['W-W_Avg']=datain['W']-W_Avg
         #three more columns have been made and assigned value as V-Vavg.....corresponding name and corresponding columns
-        datain['Octant']=np.nan #created a blank column named octant for which operation is to be done
+        datain['Octant']=np.nan 
+        #created a blank column named octant for which operation is to be done
         i=0 #initiating for loop variable
         while i<total_size: #loop is run for whole column size of input column file
             datain.loc[i,'Octant']=check_octant(datain.loc[i,'U-U_Avg'],datain.loc[i,'V-V_Avg'],datain.loc[i,'W-W_Avg'])
@@ -159,7 +160,7 @@ def octant_range_names(mod=5000):
         datain.loc[0,'-3']=on3
         datain.loc[0,'4']=op4
         datain.loc[0,'-4']=on4
-        ######################################################################################################################################
+######################################################################################################################################
         #now finding rank based on octant appearance
         datain['Rank 1(oct 1)']=np.nan
         datain['Rank 2(oct -1)']=np.nan
@@ -176,11 +177,82 @@ def octant_range_names(mod=5000):
         datain.loc[noi+5,'-1']="Octant Name"
         datain.loc[noi+5,'2']="Count of Rank 1 Mod values"
         ##created required matrix 
-
-
-
-    
+        #now, writing program for finding rank of matrix....and filling matrix
         octant_name_id_mapping = {"1":"Internal outward interaction", "-1":"External outward interaction", "2":"External Ejection", "-2":"Internal Ejection", "3":"External inward interaction", "-3":"Internal inward interaction", "4":"Internal sweep", "-4":"External sweep"}
+        datain.loc[noi+6,'1']="1"
+        datain.loc[noi+7,'1']="-1"
+        datain.loc[noi+8,'1']="2"
+        datain.loc[noi+9,'1']="-2"
+        datain.loc[noi+10,'1']="3"
+        datain.loc[noi+11,'1']="-3"
+        datain.loc[noi+12,'1']="4"
+        datain.loc[noi+13,'1']="-4"
+        datain.loc[noi+6,'-1']=octant_name_id_mapping["1"]
+        datain.loc[noi+7,'-1']=octant_name_id_mapping["-1"]
+        datain.loc[noi+8,'-1']=octant_name_id_mapping["2"]
+        datain.loc[noi+9,'-1']=octant_name_id_mapping["-2"]
+        datain.loc[noi+10,'-1']=octant_name_id_mapping["3"]
+        datain.loc[noi+11,'-1']=octant_name_id_mapping["-3"]
+        datain.loc[noi+12,'-1']=octant_name_id_mapping["4"]
+        datain.loc[noi+13,'-1']=octant_name_id_mapping["-4"]
+        i=0
+        r1cp1=r1cn1=r1cp2=r1cn2=r1cp3=r1cn3=r1cp4=r1cn4=0
+        while (i<noi+2):
+            if(i==1):
+                i=i+1
+            rank_dict = {datain.loc[i,'1'] :"1",datain.loc[i,'-1'] :"-1",datain.loc[i,'2'] :"2",datain.loc[i,'-2'] :"-2",datain.loc[i,'3'] :"3",datain.loc[i,'-3'] :"-3",datain.loc[i,'4'] :"4",datain.loc[i,'-4'] :"-4"}
+            rank_list =[datain.loc[i,'1'],datain.loc[i,'-1'],datain.loc[i,'2'],datain.loc[i,'-2'],datain.loc[i,'3'],datain.loc[i,'-3'],datain.loc[i,'4'],datain.loc[i,'-4'] ]
+            rank_list.sort() 
+            for j in range(8):
+                lok=rank_dict[rank_list[j]]
+                if (lok=="1"):
+                    datain.loc[i,'Rank 1(oct 1)']=8-j
+                if (lok=="-1"):
+                    datain.loc[i,'Rank 2(oct -1)']=8-j
+                if (lok=="2"):
+                    datain.loc[i,'Rank 3(oct 2)']=8-j
+                if (lok=="-2"):
+                    datain.loc[i,'Rank 4(oct -2)']=8-j
+                if (lok=="3"):
+                    datain.loc[i,'Rank 5(oct 3)']=8-j
+                if (lok=="-3"):
+                    datain.loc[i,'Rank 6(oct -3)']=8-j
+                if (lok=="4"):
+                    datain.loc[i,'Rank 7(oct 4)']=8-j
+                if (lok=="-4"):
+                    datain.loc[i,'Rank 8(oct -4)']=j+1
+            datain.loc[i,'Rank 1 Octant Id']=rank_dict[rank_list[7]]
+            datain.loc[i,'Rank 1 Octant Name']=octant_name_id_mapping[datain.loc[i,'Rank 1 Octant Id']]
+            ##now we will be counting rant one appearance of each octant...
+            if(i>1):
+                #this we have done beacause we have to count the rank one value for each mod duration only
+                if(datain.loc[i,'Rank 1 Octant Id']=="1"):
+                    r1cp1+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-1"):
+                    r1cn1+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="2"):
+                    r1cp2+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-2"):
+                    r1cn2+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="3"):
+                    r1cp3+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-3"):
+                    r1cn3+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="4"):
+                    r1cp4+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-4"):
+                    r1cn4+=1
+            i=i+1
+        datain.loc[noi+6,'2']=r1cp1
+        datain.loc[noi+7,'2']=r1cn1
+        datain.loc[noi+8,'2']=r1cp2
+        datain.loc[noi+9,'2']=r1cn2
+        datain.loc[noi+10,'2']=r1cp3
+        datain.loc[noi+11,'2']=r1cn3
+        datain.loc[noi+12,'2']=r1cp4
+        datain.loc[noi+13,'2']=r1cn4
+        
+        
         #code written for desired work now converting dataframe to excel file
         try:  #this is try and except block
             datain.to_excel('octant_output_ranking_excel.xlsx',index=False)# it makes a excel file with the name given in 'quote'

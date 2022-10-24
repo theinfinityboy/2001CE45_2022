@@ -1,0 +1,2 @@
+ rank_list =[datain.loc[i,'1'],datain.loc[i,'-1'],datain.loc[i,'2'],datain.loc[i,'-2'],datain.loc[i,'3'],datain.loc[i,'-3'],datain.loc[i,'4'],datain.loc[i,'4'],datain.loc[i,'-4'] ]
+            rank_list.sort() 
