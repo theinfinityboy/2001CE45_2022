@@ -282,7 +282,7 @@ else:
     print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
 
 
-mod=5000 
+mod=3000 
 #user data
 octant_range_names(mod)
 #calling required function
