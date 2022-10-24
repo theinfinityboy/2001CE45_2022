@@ -179,6 +179,7 @@ def octant_range_names(mod=5000):
         ##created required matrix 
         #now, writing program for finding rank of matrix....and filling matrix
         octant_name_id_mapping = {"1":"Internal outward interaction", "-1":"External outward interaction", "2":"External Ejection", "-2":"Internal Ejection", "3":"External inward interaction", "-3":"Internal inward interaction", "4":"Internal sweep", "-4":"External sweep"}
+        #this dictionary has been made to name the corresponding octant
         datain.loc[noi+6,'1']="1"
         datain.loc[noi+7,'1']="-1"
         datain.loc[noi+8,'1']="2"
@@ -195,16 +196,20 @@ def octant_range_names(mod=5000):
         datain.loc[noi+11,'-1']=octant_name_id_mapping["-3"]
         datain.loc[noi+12,'-1']=octant_name_id_mapping["4"]
         datain.loc[noi+13,'-1']=octant_name_id_mapping["-4"]
-        i=0
-        r1cp1=r1cn1=r1cp2=r1cn2=r1cp3=r1cn3=r1cp4=r1cn4=0
+        #filled matrix required as according to tutorial corresponding to their requirement #no logic used used till now
+        i=0 #we will do iteration for the all rank count and write the count for one iteration...
+        r1cp1=r1cn1=r1cp2=r1cn2=r1cp3=r1cn3=r1cp4=r1cn4=0 
+        #variable initiated for rank 1 count p(positive)/n(negative) octant id we will use it later for rank 1 appearance in the mod values of diff. octant id
         while (i<noi+2):
             if(i==1):
-                i=i+1
+                i=i+1 #this has been done because we no values at the 1 st row(index basis)i.e. no values for octant id in the 2nd row
             rank_dict = {datain.loc[i,'1'] :"1",datain.loc[i,'-1'] :"-1",datain.loc[i,'2'] :"2",datain.loc[i,'-2'] :"-2",datain.loc[i,'3'] :"3",datain.loc[i,'-3'] :"-3",datain.loc[i,'4'] :"4",datain.loc[i,'-4'] :"-4"}
+            #initiated dictionary of values at corresponding row iteration at different columns with their column name as value
             rank_list =[datain.loc[i,'1'],datain.loc[i,'-1'],datain.loc[i,'2'],datain.loc[i,'-2'],datain.loc[i,'3'],datain.loc[i,'-3'],datain.loc[i,'4'],datain.loc[i,'-4'] ]
+            #created list and sorted in next step to get the rank on the basis of indexes easily....
             rank_list.sort() 
             for j in range(8):
-                lok=rank_dict[rank_list[j]]
+                lok=rank_dict[rank_list[j]] #made variable to use it frequently with ease
                 if (lok=="1"):
                     datain.loc[i,'Rank 1(oct 1)']=8-j
                 if (lok=="-1"):
@@ -220,8 +225,10 @@ def octant_range_names(mod=5000):
                 if (lok=="4"):
                     datain.loc[i,'Rank 7(oct 4)']=8-j
                 if (lok=="-4"):
-                    datain.loc[i,'Rank 8(oct -4)']=j+1
+                    datain.loc[i,'Rank 8(oct -4)']=8-j
+                    #assigning rank values of each octant in each mod value range as well as overall data in its corresponding column
             datain.loc[i,'Rank 1 Octant Id']=rank_dict[rank_list[7]]
+            #since out list are sorted in ascending order so we are traversing from back side to get the max value in the list to assign it as rank 1
             datain.loc[i,'Rank 1 Octant Name']=octant_name_id_mapping[datain.loc[i,'Rank 1 Octant Id']]
             ##now we will be counting rant one appearance of each octant...
             if(i>1):
@@ -242,6 +249,7 @@ def octant_range_names(mod=5000):
                     r1cp4+=1
                 if(datain.loc[i,'Rank 1 Octant Id']=="-4"):
                     r1cn4+=1
+                    #all values will be updated at end of the iteration
             i=i+1
         datain.loc[noi+6,'2']=r1cp1
         datain.loc[noi+7,'2']=r1cn1
@@ -251,6 +259,7 @@ def octant_range_names(mod=5000):
         datain.loc[noi+11,'2']=r1cn3
         datain.loc[noi+12,'2']=r1cp4
         datain.loc[noi+13,'2']=r1cn4
+        #assigning value in the required matrix with the help of variable initiated earlier
         
         
         #code written for desired work now converting dataframe to excel file
@@ -274,5 +283,7 @@ else:
 
 
 mod=5000 
+#user data
 octant_range_names(mod)
+#calling required function
 
