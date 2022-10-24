@@ -159,6 +159,24 @@ def octant_range_names(mod=5000):
         datain.loc[0,'-3']=on3
         datain.loc[0,'4']=op4
         datain.loc[0,'-4']=on4
+        ######################################################################################################################################
+        #now finding rank based on octant appearance
+        datain['Rank 1(oct 1)']=np.nan
+        datain['Rank 2(oct -1)']=np.nan
+        datain['Rank 3(oct 2)']=np.nan
+        datain['Rank 4(oct -2)']=np.nan
+        datain['Rank 5(oct 3)']=np.nan
+        datain['Rank 6(oct -3)']=np.nan
+        datain['Rank 7(oct 4)']=np.nan
+        datain['Rank 8(oct -4)']=np.nan
+        datain['Rank 1 Octant Id']=np.nan
+        datain['Rank 1 Octant Name']=np.nan
+        #created column for writing rank values
+        datain.loc[noi+5,'1']="Octant Id"
+        datain.loc[noi+5,'-1']="Octant Name"
+        datain.loc[noi+5,'2']="Count of Rank 1 Mod values"
+        ##created required matrix 
+
 
 
     
