@@ -1,9 +1,17 @@
 
-
+import os
+os.system("cls")
+import pandas as pd
+import numpy as np
+import math
+#importing libraries
+os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut05')
 from datetime import datetime
 start_time = datetime.now()
 
 def attendance_report():
+    
+    pass
 ###Code
 
 from platform import python_version
