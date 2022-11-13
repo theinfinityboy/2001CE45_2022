@@ -25,11 +25,14 @@ def attendance_report():
     myreader1=pd.read_csv('input_attendance.csv')
     myreader2=pd.read_csv('input_registered_students.csv')
     os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut06\output') 
+    #changed directory to save output file in it
     size=myreader1['Timestamp'].size 
-    mylist=[] 
-    myset=set() 
+    #this would be no. of rows in input attendance file
+    mylist=[] #a blank list has been made we will later store each cell of Timestamp
+    myset=set() #empty set has been made to catch the duplicate attendance
 
     for i in range(size): 
+    #running for loop to count total no. of days on which lecture was taken
         mylist.append((myreader1['Timestamp'][i])) 
         a=str(mylist[i]) 
 

@@ -52,14 +52,16 @@ def octant_analysis(mod=5000):
         datain['W-W_Avg']=datain['W']-W_Avg
         #three more columns have been made and assigned value as V-Vavg.....corresponding name and corresponding columns
         datain['Octant']=np.nan #created a blank column named octant for which operation is to be done
+        datain['']=np.nan
         i=0 #initiating for loop variable
         while i<total_size: #loop is run for whole column size of input column file
             datain.loc[i,'Octant']=check_octant(datain.loc[i,'U-U_Avg'],datain.loc[i,'V-V_Avg'],datain.loc[i,'W-W_Avg'])
             #octant column is assigned octant value after chehking value of octant by calling function
             i=i+1 #updating loop
 
-        datain['']=np.nan #new blank file and some processing according to the demand of output file has been done
-        datain.loc[1,'']="User Input" #assigned a string at given index 1 acc. to output file
+        datain[' ']=np.nan #new blank file and some processing according to the demand of output file has been done
+        datain.loc[0,' ']="mod {}".format(mod) 
+        #assigned a string at given index 1 acc. to output file
         datain['Octant Id']=np.nan 
         datain['1']=np.nan
         datain['-1']=np.nan
@@ -71,8 +73,7 @@ def octant_analysis(mod=5000):
         datain['-4']=np.nan
 
         #new columns has been made for further proceedings
-        datain.loc[0,'Octant Id']="Overall Count" #filling the columns according to output file demand
-        datain.loc[1,'Octant Id']="mod {}".format(mod)
+        datain.loc[0,'Octant Id']="Overall Count"
         #again filling the column but this time adding parameters in it on which the next processing depends
         noi = math.ceil(total_size/mod) #here ceil value provides the upper bound of the floating no...e.g..7.4 have ceil value 8
         #this will reflect no. of iterations to be performed or no. of sections in which our input file will be divided to check the count 
@@ -92,7 +93,7 @@ def octant_analysis(mod=5000):
             else:             #u is the condition or limit for upper boundary of the mod ranged values
                 u=(i+1)*mod-1
             l=i*mod          #similarly l is the lower boundary
-            datain.loc[i+2,'Octant Id']="{}-{}".format(l,u) #filling mod ranged section as its demand of sections should not count more than mod value count columns
+            datain.loc[i+1,'Octant Id']="{}-{}".format(l,u) #filling mod ranged section as its demand of sections should not count more than mod value count columns
             j=0 #initiated for loop
             p1=0
             n1=0
@@ -143,14 +144,14 @@ def octant_analysis(mod=5000):
             #updating overall count of each octant value in our input datawhere it lies
 
             #//when loop is broken for mod range value the value is stored in the desired location using following command
-            datain.loc[i+2,'1']=p1
-            datain.loc[i+2,'-1']=n1
-            datain.loc[i+2,'2']=p2
-            datain.loc[i+2,'-2']=n2
-            datain.loc[i+2,'3']=p3
-            datain.loc[i+2,'-3']=n3
-            datain.loc[i+2,'4']=p4
-            datain.loc[i+2,'-4']=n4
+            datain.loc[i+1,'1']=p1
+            datain.loc[i+1,'-1']=n1
+            datain.loc[i+1,'2']=p2
+            datain.loc[i+1,'-2']=n2
+            datain.loc[i+1,'3']=p3
+            datain.loc[i+1,'-3']=n3
+            datain.loc[i+1,'4']=p4
+            datain.loc[i+1,'-4']=n4
             i=i+1 
             #updating another parent loop having limit noi---no. of iterations reqd
             #after parent loop also broken 
@@ -165,6 +166,103 @@ def octant_analysis(mod=5000):
         datain.loc[0,'4']=op4
         datain.loc[0,'-4']=on4
         #all work done now we have desired dataframe which we need to convert in csv file using the command below
+        #now finding rank based on octant appearance
+        datain['Rank Octant 1']=np.nan
+        datain['Rank Octant -1']=np.nan
+        datain['Rank Octant 2']=np.nan
+        datain['Rank Octant -2']=np.nan
+        datain['Rank Octant 3']=np.nan
+        datain['Rank Octant -3']=np.nan
+        datain['Rank Octant 4']=np.nan
+        datain['Rank Octant -4']=np.nan
+        datain['Rank 1 Octant Id']=np.nan
+        datain['Rank 1 Octant Name']=np.nan
+        #created column for writing rank values
+        datain.loc[noi+2,'Rank Octant 4']="Octant ID"
+        datain.loc[noi+2,'Rank Octant -4']="Octant Name"
+        datain.loc[noi+2,'Rank 1 Octant Id']="Count of Rank 1 Mod values"
+        ##created required matrix 
+        #now, writing program for finding rank of matrix....and filling matrix
+        octant_name_id_mapping = {"1":"Internal outward interaction", "-1":"External outward interaction", "2":"External Ejection", "-2":"Internal Ejection", "3":"External inward interaction", "-3":"Internal inward interaction", "4":"Internal sweep", "-4":"External sweep"}
+         #this dictionary has been made to name the corresponding octant
+        datain.loc[noi+3,'Rank Octant 4']="1"
+        datain.loc[noi+4,'Rank Octant 4']="-1"
+        datain.loc[noi+5,'Rank Octant 4']="2"
+        datain.loc[noi+6,'Rank Octant 4']="-2"
+        datain.loc[noi+7,'Rank Octant 4']="3"
+        datain.loc[noi+8,'Rank Octant 4']="-3"
+        datain.loc[noi+9,'Rank Octant 4']="4"
+        datain.loc[noi+10,'Rank Octant 4']="-4"
+        datain.loc[noi+3,'Rank Octant -4']=octant_name_id_mapping["1"]
+        datain.loc[noi+4,'Rank Octant -4']=octant_name_id_mapping["-1"]
+        datain.loc[noi+5,'Rank Octant -4']=octant_name_id_mapping["2"]
+        datain.loc[noi+6,'Rank Octant -4']=octant_name_id_mapping["-2"]
+        datain.loc[noi+7,'Rank Octant -4']=octant_name_id_mapping["3"]
+        datain.loc[noi+8,'Rank Octant -4']=octant_name_id_mapping["-3"]
+        datain.loc[noi+9,'Rank Octant -4']=octant_name_id_mapping["4"]
+        datain.loc[noi+10,'Rank Octant -4']=octant_name_id_mapping["-4"]
+        #filled matrix required as according to tutorial corresponding to their requirement #no logic used used till now
+        i=0 #we will do iteration for the all rank count and write the count for one iteration...
+        r1cp1=r1cn1=r1cp2=r1cn2=r1cp3=r1cn3=r1cp4=r1cn4=0 
+        #variable initiated for rank 1 count p(positive)/n(negative) octant id we will use it later for rank 1 appearance in the mod values of diff. octant id
+        while (i<noi+1):
+            rank_dict = {datain.loc[i,'1'] :"1",datain.loc[i,'-1'] :"-1",datain.loc[i,'2'] :"2",datain.loc[i,'-2'] :"-2",datain.loc[i,'3'] :"3",datain.loc[i,'-3'] :"-3",datain.loc[i,'4'] :"4",datain.loc[i,'-4'] :"-4"}
+            #initiated dictionary of values at corresponding row iteration at different columns with their column name as value
+            rank_list =[datain.loc[i,'1'],datain.loc[i,'-1'],datain.loc[i,'2'],datain.loc[i,'-2'],datain.loc[i,'3'],datain.loc[i,'-3'],datain.loc[i,'4'],datain.loc[i,'-4'] ]
+            #created list and sorted in next step to get the rank on the basis of indexes easily....
+            rank_list.sort() 
+            for j in range(8):
+                lok=rank_dict[rank_list[j]] #made variable to use it frequently with ease
+                if (lok=="1"):
+                    datain.loc[i,'Rank Octant 1']=8-j
+                if (lok=="-1"):
+                    datain.loc[i,'Rank Octant -1']=8-j
+                if (lok=="2"):
+                    datain.loc[i,'Rank Octant 2']=8-j
+                if (lok=="-2"):
+                    datain.loc[i,'Rank Octant -2']=8-j
+                if (lok=="3"):
+                    datain.loc[i,'Rank Octant 3']=8-j
+                if (lok=="-3"):
+                    datain.loc[i,'Rank Octant -3']=8-j
+                if (lok=="4"):
+                    datain.loc[i,'Rank Octant 4']=8-j
+                if (lok=="-4"):
+                    datain.loc[i,'Rank Octant -4']=8-j
+                    #assigning rank values of each octant in each mod value range as well as overall data in its corresponding column
+            datain.loc[i,'Rank 1 Octant Id']=rank_dict[rank_list[7]]
+            #since out list are sorted in ascending order so we are traversing from back side to get the max value in the list to assign it as rank 1
+            datain.loc[i,'Rank 1 Octant Name']=octant_name_id_mapping[datain.loc[i,'Rank 1 Octant Id']]
+            ##now we will be counting rant one appearance of each octant...
+            if(i>0):
+                #this we have done beacause we have to count the rank one value for each mod duration only
+                if(datain.loc[i,'Rank 1 Octant Id']=="1"):
+                    r1cp1+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-1"):
+                    r1cn1+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="2"):
+                    r1cp2+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-2"):
+                    r1cn2+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="3"):
+                    r1cp3+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-3"):
+                    r1cn3+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="4"):
+                    r1cp4+=1
+                if(datain.loc[i,'Rank 1 Octant Id']=="-4"):
+                    r1cn4+=1
+                    #all values will be updated at end of the iteration
+            i=i+1
+        datain.loc[noi+3,'Rank 1 Octant Id']=r1cp1
+        datain.loc[noi+4,'Rank 1 Octant Id']=r1cn1
+        datain.loc[noi+5,'Rank 1 Octant Id']=r1cp2
+        datain.loc[noi+6,'Rank 1 Octant Id']=r1cn2
+        datain.loc[noi+7,'Rank 1 Octant Id']=r1cp3
+        datain.loc[noi+8,'Rank 1 Octant Id']=r1cn3
+        datain.loc[noi+9,'Rank 1 Octant Id']=r1cp4
+        datain.loc[noi+10,'Rank 1 Octant Id']=r1cn4
+        #assigning value in the required matrix with the help of variable initiated earlier
         os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07\output')
         datain.to_excel('4.6 cm_vel_octant_analysis_mod_5000.xlsx',index=False)# it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
