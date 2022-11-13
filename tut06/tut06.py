@@ -35,33 +35,39 @@ def attendance_report():
     #running for loop to count total no. of days on which lecture was taken
         mylist.append((myreader1['Timestamp'][i])) 
         a=str(mylist[i]) 
-
+        #typecasting ith element of mylist and storing in a
         if a[0]==str(0): 
-            a1=a[1] 
+        #uusing if else struct. to get the day from the date that has baan obtained timestamp
+            a1=a[1] #applying this condition for the date <10,i.e. 01,02....09
         else:
-            a1=a[0:2]
+            a1=a[0:2] #otherwise to implement the else
         if a[3]==str(0): 
-            a2=a[4] 
+            a2=a[4]
+             #similarly if else to get month from the date(from timestamp)
+            #similar condition of <10..
         else:
             a2=a[3:5]
 
-        time=date(2022,int(a2),int(a1)) 
+        time=date(2022,int(a2),int(a1)) #from lib datetime using the dateclass
         if time.strftime('%A')== 'Monday' or time.strftime('%A')== 'Thursday':
+            #condition checking mondays and thursdays if attendance were marked
             if int(a2)<10 and int(a1)<10:
                 myset.add('0'+str(a1)+'/'+'0'+str(a2)+'/'+str(2022)) 
+                #if true date added to the set
             elif int(a2)<10 and int(a1)>=10:
                 myset.add(str(a1)+'/'+'0'+str(a2)+'/'+str(2022)) 
             elif int(a2)>10 and int(a1)<10:
                 myset.add('0'+str(a1)+'/'+str(a2)+'/'+str(2022)) 
             elif int(a2)>10 and int(a1)>10:
                 myset.add(str(a1)+'/'+str(a2)+'/'+str(2022)) 
-    total=len(myset)  
-    myset_list=list(myset) 
+    total=len(myset)  #here we counted total no. pf lectures
+    myset_list=list(myset) #conversion of set in the list
     myset_list.sort(key=lambda date: datetime.strptime(date, "%d/%m/%Y")) 
-
+    #based on the date sorting of list has been done
     size_class=myreader2['Roll No'].size 
+    #size of class from the dataframe obtained by file input_registered_students.csv
     df2=pd.DataFrame()  
-
+    #creating dataframe
     for i in range(size_class):
         df=pd.DataFrame() 
         a1=''
