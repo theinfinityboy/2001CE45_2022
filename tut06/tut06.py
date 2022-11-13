@@ -67,33 +67,38 @@ def attendance_report():
     size_class=myreader2['Roll No'].size 
     #size of class from the dataframe obtained by file input_registered_students.csv
     df2=pd.DataFrame()  
-    #creating dataframe
+    #creating dataframe for consolidated attendance report
     for i in range(size_class):
+        #creating dataframe for every stud in the loop
         df=pd.DataFrame() 
         a1=''
-        real_total=0 
-        duplicate=0 
+        real_total=0 #stores real att.
+        duplicate=0 #stores duplicate attn.
 
-        df['Date']=''
+        df['Date']='' #creating first column date
         df.loc[0,'Roll']=myreader2['Roll No'][i] 
         roll=myreader2['Roll No'][i] 
         df.loc[0,'Name']=myreader2['Name'][i] 
+        #wrote name and roll to dataframe df
 
-        df2.loc[i,'Roll']=roll 
+        df2.loc[i,'Roll']=roll  
         df2.loc[i,'Name']=df.loc[0,'Name'] 
-        for row1 in range(1,total+1): 
-            df.loc[row1,'Date']=myset_list[row1-1] 
-            df.loc[row1,'Total Attendance Count']=0
-            df.loc[row1,'Real']=0 
-            df.loc[row1,'Duplicate']=0
-            df.loc[row1,'Invalid']=0
-            df.loc[row1,'Absent']=0
-            df2.loc[i,myset_list[row1-1]]='A'
+        #adding roll no. and name column to df2
+        for rjb in range(1,total+1): #setting some default values in df and df2
+            df.loc[rjb,'Date']=myset_list[rjb-1] #writing date in df
+            df.loc[rjb,'Total Attendance Count']=0
+            df.loc[rjb,'Real']=0 
+            df.loc[rjb,'Duplicate']=0
+            df.loc[rjb,'Invalid']=0
+            df.loc[rjb,'Absent']=0
+            df2.loc[i,myset_list[rjb-1]]='A'
+            #date column has been created and in df2 and assingned default A as absent...later we will change in case of present
+            
 
-        for j in range(size):
+        for j in range(size): 
             real=0 
             invalid=0 
-
+            #STORING REAL AND INVALID ATTENDANCE
             if str(myreader2['Roll No'][i]) in str(myreader1['Attendance'][j]): 
                 a=str(mylist[j]) 
                 date_1,time_1=verify(myreader1['Timestamp'][j]) 
