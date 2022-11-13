@@ -90,53 +90,68 @@ def attendance_report():
             df.loc[rjb,'Real']=0 
             df.loc[rjb,'Duplicate']=0
             df.loc[rjb,'Invalid']=0
-            df.loc[rjb,'Absent']=0
+            df.loc[rjb,'Absent']=1
             df2.loc[i,myset_list[rjb-1]]='A'
             #date column has been created and in df2 and assingned default A as absent...later we will change in case of present
             
-
+        
         for j in range(size): 
             real=0 
             invalid=0 
             #STORING REAL AND INVALID ATTENDANCE
             if str(myreader2['Roll No'][i]) in str(myreader1['Attendance'][j]): 
-                a=str(mylist[j]) 
-                date_1,time_1=verify(myreader1['Timestamp'][j]) 
-                if date_1==1: 
-                    if time_1==1: 
+                # we will proceed in case of roll no. present in the column
+                a=str(mylist[j]) #accecing alement of my list
+                date_1,time_1=verify(myreader1['Timestamp'][j]) #verifying from the func..
+                if date_1==1: #found the day as monday/thursday
+                    if time_1==1: #found time within 2-3 pm
                         real+=1 
                         real_total+=1 
+                        #increament in the real attd.
                         if a[0:14] in a1: 
+                            # if a[0:14] that is specific date and time, already in a1 which is the collection of all such strings 'a'.
                             duplicate+=1
                         else:
                             duplicate=0 
-                    else:
+                    else:  # if not within 2-3 PM, invalid becomes 1.
                         invalid+=1
-
-                    for row2 in range(1,total+1):
-                        if a[0:10]== myset_list[row2-1]:
-                            df.loc[row2,'Total Attendance Count']=real+duplicate 
-                            df.loc[row2,'Real']=int(real) 
-                            df.loc[row2,'Duplicate']=int(duplicate) 
-                            df.loc[row2,'Invalid']=int(invalid) 
-                            df.loc[row2,'Absent']=1-real 
+                    
+                    
+                    for rjb2 in range(1,total+1):
+                        x = myset_list[rjb2-1]
+                        datetime_str = datetime.strptime(x, '%d/%m/%Y')
+                        datetime_str = datetime.strftime(datetime_str, '%d-%m-%Y')
+                        if a[0:10]==datetime_str:
+                            
+                            df.loc[rjb2,'Total Attendance Count']=real+duplicate #total lecture taken to df
+                            df.loc[rjb2,'Real']=int(real) 
+                            df.loc[rjb2,'Duplicate']=int(duplicate) 
+                            df.loc[rjb2,'Invalid']=int(invalid) 
+                            if real>0:
+                                df.loc[rjb2,'Absent']=0
                             break
 
-                a1+=a    
+                a1+=a    #adding a to a1(a1 cross checks with all timestamp that would appear in future iterations and ppoint out duplicate)
                 if real==1: 
-                    df2.iloc[i,row2]='P'
+                    df2.iloc[i,rjb2]='P'
+                    # if real ==1 and THEN P will replace A WHICH WAS FILLED BY DEFAULT EARLIER IN THIS CODE
 
         df2.loc[i,'Actual Lecture Taken']=total 
         df2.loc[i,'Total Real']=real_total
         df2.loc[i,'% Attendance']=round(real_total/total,4)*100
-        df.to_excel(f'{roll}.xlsx',index=False) 
+        #UPDATED THE MATRIX FOR ROLL FILE
+        try:
+            df.to_excel(f'{roll}.xlsx',index=False)
+        except:
+            print("check if{}.csv is open or what?, there was error in making/overwrite this file. if open pls close the file and re run the programme".format(roll))
+        #FILE ,MADE FOR EACH ROLL NO.
     
-    return df2 
+    return df2  #consolidated dataframe of all individual dataframes.
     
-def verify(time): 
+def verify(time): #FUNCTION TO CHECK TIMESTAMP VALIDITY
 
     if time[0]==str(0): 
-        a1=time[1]
+        a1=time[1] #same as done earlier...conditions to store a1 and a2
     else:
         a1=time[0:2]
 
@@ -145,10 +160,11 @@ def verify(time):
     else:
         a2=time[3:5]
 
-    time1=date(2022,int(a2),int(a1)) 
-    time2=f'{time1}T{time[11:]}'
+    time1=date(2022,int(a2),int(a1)) #input format---constructor class date
+    time2=f'{time1}T{time[11:]}' #time range checking--combined format
     time_range = DateTimeRange(f'{time1}T14:00:00', f'{time1}T15:00:00') 
-
+    #2-3 pm time interval checking
+    #date checking
     if time1.strftime('%A')== 'Monday' or time1.strftime('%A')== 'Thursday':
         if time2 in time_range: 
             return 1,1
@@ -195,24 +211,25 @@ def send_mail(send_from, send_to, subject, message, path,password,
  
 try:
     df2=attendance_report() 
-    df2.to_excel('attendance_report_consolidated.xlsx',index=False) 
-    print('The files have been created.')
     try:
-        response=int(input("Do you want to send this file using gmail id? For 'yes' enter 1, for 'no' enter 0:")) # asking if user wants to send on given email id
-        try:
-            if response==1:
-                send_mail('enteryourgmail@gmail.com','cs3842022@gmail.com','Please find attachment.','attendance_report_consolidated.csv is attached',
-                'attendance_report_consolidated.csv','ChangeMe PASSWORD') 
-        except:
-            print('Error in sending an email! These could be the possible reasons:')
-            print('1. Configure your email account to allow sending emails via third-party apps (Python in this case). For gmail account, use the following steps:')
-            print('\ta. Go to myaccount.google.com and sign into your gmail account if required.\n\tb.Under "Security" turn on 2 step verification using your phone number. \n\tc. Go to myaccout.google.com/apppasswords and you will be asked to sign in\n\td. Under "Select app" choose "Other", and type Python in the box.\n\te.A 16 digit password appears on the screen which can be used to login here when calling the function send_mail().')
-            print('2. For other email accounts, use a similar procedure or look up on the web.')
-            print('3. Use the correct server and correct port. For gmail IDs, the correct server and port has been given.')
-            print('4. Connect to the internet and retry.')
-            print('5. The correct file path was not specified.')
+        df2.to_excel('attendance_report_consolidated.xlsx',index=False) 
+        print('The files have been created.')
     except:
-        print('A non-integer value was entered!')
+        print('check if attendance_report_consolidated.xlsx is already open or what? if open please close.. ')
+    
+    response=int(input("Do you want to email this file using gmail id? For 'yes' enter 1, for 'no' enter 0:")) # asking if user wants to send on given email id
+    try:
+        if response==1:
+            send_mail('enteryourgmail@gmail.com','cs3842022@gmail.com','Please find attachment.','attendance_report_consolidated.csv is attached',
+            'attendance_report_consolidated.csv','ChangeMe PASSWORD') 
+    except:
+        print('Connect to the internet and retry.')
+        print('Error in sending an email! These could be the possible reasons.\nConfigure your email account to allow sending emails via third-party apps (Python in this case). For gmail account, use the following steps:\n')
+        print('\ta. Go to myaccount.google.com and sign into your gmail account if required.\n\tb.Under "Security" turn on 2 step verification using your phone number. \n\tc. Go to myaccout.google.com/apppasswords and you will be asked to sign in\n\td. Under "Select app" choose "Other", and type Python in the box.\n\te.A 16 digit password appears on the screen which can be used to login here when calling the function send_mail().')
+        print('Use the correct server and correct port. For gmail IDs, the correct server and port has been given.')
+        print('The correct file path was not specified.')
+    
+        
 except:
     print('Error occured in reading file input_attendance.csv. Please change the date-format of the timestamps to dd/mm/yyyy or use a fresh input file.')
 
