@@ -59,8 +59,8 @@ def octant_analysis(mod=5000):
             #octant column is assigned octant value after chehking value of octant by calling function
             i=i+1 #updating loop
 
-        datain[' ']=np.nan #new blank file and some processing according to the demand of output file has been done
-        datain.loc[0,' ']="mod {}".format(mod) 
+        datain['remove_mod']=np.nan #new blank file and some processing according to the demand of output file has been done
+        datain.loc[0,'remove_mod']="mod {}".format(mod) 
         #assigned a string at given index 1 acc. to output file
         datain['Octant Id']=np.nan 
         datain['1']=np.nan
@@ -263,6 +263,583 @@ def octant_analysis(mod=5000):
         datain.loc[noi+9,'Rank 1 Octant Id']=r1cp4
         datain.loc[noi+10,'Rank 1 Octant Id']=r1cn4
         #assigning value in the required matrix with the help of variable initiated earlier
+
+        ##MAKING OTHER REQUIRED MATRIX..........
+        #transition count..
+        datain['']=np.nan
+        datain['remove0']=np.nan
+        datain['remove1']=np.nan
+        datain['remove2']=np.nan
+        datain['remove3']=np.nan
+        datain['remove4']=np.nan
+        datain['remove5']=np.nan
+        datain['remove6']=np.nan
+        datain['remove7']=np.nan
+        datain['remove8']=np.nan
+        datain['remove9']=np.nan
+
+        #making matrix
+        datain.loc[1,'remove0']="From"
+        datain.loc[0,'remove1']="Octant #"
+        datain.loc[1,'remove1']='+1'
+        datain.loc[2,'remove1']='-1'
+        datain.loc[3,'remove1']='+2'
+        datain.loc[4,'remove1']='-2'
+        datain.loc[5,'remove1']='+3'
+        datain.loc[6,'remove1']='-3'
+        datain.loc[7,'remove1']='+4'
+        datain.loc[8,'remove1']='-4'
+        datain.loc[0,'remove2']='+1'
+        datain.loc[0,'remove3']='-1'
+        datain.loc[0,'remove4']='+2'
+        datain.loc[0,'remove5']='-2'
+        datain.loc[0,'remove6']='+3'
+        datain.loc[0,'remove7']='-3'
+        datain.loc[0,'remove8']='+4'
+        datain.loc[0,'remove9']='-4'
+        #overall transition matrix made.....
+        #now working for assigning value in it....
+        #filling 0 in overall transition matrix
+        for i in range(1,9):
+            datain.loc[i,'remove2']=0
+            datain.loc[i,'remove3']=0
+            datain.loc[i,'remove4']=0
+            datain.loc[i,'remove5']=0
+            datain.loc[i,'remove6']=0
+            datain.loc[i,'remove7']=0
+            datain.loc[i,'remove8']=0
+            datain.loc[i,'remove9']=0
+        pos=12 #storing for position in a variable later to use in loop
+        #for mod transition
+        i=0
+        while i<noi: 
+            ll=i*mod
+            if ((i+1)*mod)>=total_size:
+                ul=total_size-1
+            else:
+                ul=(i+1)*mod-1
+                #defined upper limit as ul and lower limit as ll
+            #making mod transition matrix
+            datain.loc[pos,'remove1']="Mod Transition Count"
+            datain.loc[pos+1,'remove1']="{}-{}".format(ll,ul)
+            datain.loc[pos+1,'remove2']='To'
+            datain.loc[pos+2,'remove1']="Octant #"
+            datain.loc[pos+2,'remove2']='+1'
+            datain.loc[pos+2,'remove3']='-1'
+            datain.loc[pos+2,'remove4']='+2'
+            datain.loc[pos+2,'remove5']='-2'
+            datain.loc[pos+2,'remove6']='+3'
+            datain.loc[pos+2,'remove7']='-3'
+            datain.loc[pos+2,'remove8']='+4'
+            datain.loc[pos+2,'remove9']='-4'
+            datain.loc[pos+3,'remove0']="From"
+            datain.loc[pos+3,'remove1']="+1"
+            datain.loc[pos+4,'remove1']="-1"
+            datain.loc[pos+5,'remove1']="+2"
+            datain.loc[pos+6,'remove1']="-2"
+            datain.loc[pos+7,'remove1']="+3"
+            datain.loc[pos+8,'remove1']="-3"
+            datain.loc[pos+9,'remove1']="+4"
+            datain.loc[pos+10,'remove1']="-4"
+            #matrix prepared
+            #assigning 0 to the each mod matrix
+            for j in range(3+pos,11+pos):
+                datain.loc[j,'remove2']=0
+                datain.loc[j,'remove3']=0
+                datain.loc[j,'remove4']=0
+                datain.loc[j,'remove5']=0
+                datain.loc[j,'remove6']=0
+                datain.loc[j,'remove7']=0
+                datain.loc[j,'remove8']=0
+                datain.loc[j,'remove9']=0
+            for z in range (ll,ul+1):
+                
+                if(datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+3,'remove2']+=1 #for mod transition
+                    datain.loc[1,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+3,'remove3']+=1
+                    datain.loc[1,'remove3']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+3,'remove4']+=1
+                    datain.loc[1,'remove4']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+3,'remove5']+=1
+                    datain.loc[1,'remove5']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+3,'remove6']+=1
+                    datain.loc[1,'remove6']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+3,'remove7']+=1
+                    datain.loc[1,'remove7']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+3,'remove8']+=1
+                    datain.loc[1,'remove8']+=1
+                elif (datain.loc[z,'Octant']==1 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+3,'remove9']+=1
+                    datain.loc[1,'remove9']+=1
+                #updated row corresponding to from +1 to any transition (mod or overall) 
+                #now for -1
+                if(datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+4,'remove2']+=1 #for mod transition
+                    datain.loc[2,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+4,'remove3']+=1
+                    datain.loc[2,'remove3']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+4,'remove4']+=1
+                    datain.loc[2,'remove4']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+4,'remove5']+=1
+                    datain.loc[2,'remove5']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+4,'remove6']+=1
+                    datain.loc[2,'remove6']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+4,'remove7']+=1
+                    datain.loc[2,'remove7']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+4,'remove8']+=1
+                    datain.loc[2,'remove8']+=1
+                elif (datain.loc[z,'Octant']==-1 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+4,'remove9']+=1
+                    datain.loc[2,'remove9']+=1
+                #updated row corresponding to from -1 to any transition (mod or overall) 
+                #now for +2
+                if(datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+5,'remove2']+=1 #for mod transition
+                    datain.loc[3,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+5,'remove3']+=1
+                    datain.loc[3,'remove3']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+5,'remove4']+=1
+                    datain.loc[3,'remove4']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+5,'remove5']+=1
+                    datain.loc[3,'remove5']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+5,'remove6']+=1
+                    datain.loc[3,'remove6']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+5,'remove7']+=1
+                    datain.loc[3,'remove7']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+5,'remove8']+=1
+                    datain.loc[3,'remove8']+=1
+                elif (datain.loc[z,'Octant']==2 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+5,'remove9']+=1
+                    datain.loc[3,'remove9']+=1
+                #updated row corresponding to from +2 to any transition (mod or overall)  
+
+                #now for -2
+                if(datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+6,'remove2']+=1 #for mod transition
+                    datain.loc[4,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+6,'remove3']+=1
+                    datain.loc[4,'remove3']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+6,'remove4']+=1
+                    datain.loc[4,'remove4']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+6,'remove5']+=1
+                    datain.loc[4,'remove5']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+6,'remove6']+=1
+                    datain.loc[4,'remove6']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+6,'remove7']+=1
+                    datain.loc[4,'remove7']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+6,'remove8']+=1
+                    datain.loc[4,'remove8']+=1
+                elif (datain.loc[z,'Octant']==-2 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+6,'remove9']+=1
+                    datain.loc[4,'remove9']+=1
+                #updated row corresponding to from -2 to any transition (mod or overall)
+
+                #now for +3
+                if(datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+7,'remove2']+=1 #for mod transition
+                    datain.loc[5,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+7,'remove3']+=1
+                    datain.loc[5,'remove3']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+7,'remove4']+=1
+                    datain.loc[5,'remove4']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+7,'remove5']+=1
+                    datain.loc[5,'remove5']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+7,'remove6']+=1
+                    datain.loc[5,'remove6']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+7,'remove7']+=1
+                    datain.loc[5,'remove7']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+7,'remove8']+=1
+                    datain.loc[5,'remove8']+=1
+                elif (datain.loc[z,'Octant']==3 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+7,'remove9']+=1
+                    datain.loc[5,'remove9']+=1
+                #updated row corresponding to from +3 to any transition (mod or overall) 
+
+                #now for -3
+                if(datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+8,'remove2']+=1 #for mod transition
+                    datain.loc[6,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+8,'remove3']+=1
+                    datain.loc[6,'remove3']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+8,'remove4']+=1
+                    datain.loc[6,'remove4']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+8,'remove5']+=1
+                    datain.loc[6,'remove5']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+8,'remove6']+=1
+                    datain.loc[6,'remove6']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+8,'remove7']+=1
+                    datain.loc[6,'remove7']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+8,'remove8']+=1
+                    datain.loc[6,'remove8']+=1
+                elif (datain.loc[z,'Octant']==-3 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+8,'remove9']+=1
+                    datain.loc[6,'remove9']+=1
+                #updated row corresponding to from -3 to any transition (mod or overall)     
+                #now for +4
+                if(datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+9,'remove2']+=1 #for mod transition
+                    datain.loc[7,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+9,'remove3']+=1
+                    datain.loc[7,'remove3']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+9,'remove4']+=1
+                    datain.loc[7,'remove4']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+9,'remove5']+=1
+                    datain.loc[7,'remove5']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+9,'remove6']+=1
+                    datain.loc[7,'remove6']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+9,'remove7']+=1
+                    datain.loc[7,'remove7']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+9,'remove8']+=1
+                    datain.loc[7,'remove8']+=1
+                elif (datain.loc[z,'Octant']==4 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+9,'remove9']+=1
+                    datain.loc[7,'remove9']+=1
+                #updated row corresponding to from +4 to any transition (mod or overall)  
+                #now for -4
+                if(datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==1):
+                    datain.loc[pos+10,'remove2']+=1 #for mod transition
+                    datain.loc[8,'remove2']+=1 #for overall transition
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-1):
+                    datain.loc[pos+10,'remove3']+=1
+                    datain.loc[8,'remove3']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==2):
+                    datain.loc[pos+10,'remove4']+=1
+                    datain.loc[8,'remove4']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-2):
+                    datain.loc[pos+10,'remove5']+=1
+                    datain.loc[8,'remove5']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==3):
+                    datain.loc[pos+10,'remove6']+=1
+                    datain.loc[8,'remove6']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-3):
+                    datain.loc[pos+10,'remove7']+=1
+                    datain.loc[8,'remove7']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==4):
+                    datain.loc[pos+10,'remove8']+=1
+                    datain.loc[8,'remove8']+=1
+                elif (datain.loc[z,'Octant']==-4 and datain.loc[z+1,'Octant']==-4):
+                    datain.loc[pos+10,'remove9']+=1
+                    datain.loc[8,'remove9']+=1
+                    #updated row corresponding to from -4 to any transition (mod or overall)  
+                if(z==total_size-2):
+                    break   
+                    #here we used break statement because we need to traverse to total no. of rows minus 1 because indexing in python is from zero
+                    #and due to this last element of row will be at index total size -1
+                    #and we need to traverse to 2nd last row only so breaking loop at 2nd last element
+                
+            pos=pos+13 #updating position for next iteration
+            i=i+1
+        ####################################################
+        #now doing longest susequent count part...........
+        datain['']=np.nan
+        datain['Octant ##']=np.nan
+        datain['Longest Subsequence Length']=np.nan
+        datain['Count']=np.nan
+        datain.loc[0,'Octant ##']='+1'
+        datain.loc[1,'Octant ##']='-1'
+        datain.loc[2,'Octant ##']='+2'
+        datain.loc[3,'Octant ##']='-2'
+        datain.loc[4,'Octant ##']='+3'
+        datain.loc[5,'Octant ##']='-3'
+        datain.loc[6,'Octant ##']='+4'
+        datain.loc[7,'Octant ##']='-4'
+        #till here matrix has been made now we have to fill the values in the dataframe
+        scp1=scn1=scp2=scn2=scp3=scn3=scp4=scn4=0 #made variable for subsequent positive and negative count
+        cp1=cn1=cp2=cn2=cp3=cn3=cp4=cn4=0 #made variables for count the appearance of subsequent count
+        listp1=[]
+        listn1=[]
+        listp2=[]
+        listn2=[]
+        listp3=[]
+        listn3=[]
+        listp4=[]
+        listn4=[]
+        #empty list made to use it later for time range printing
+
+        for i in range(0,total_size):
+            if(datain.loc[i,'Octant']==1): 
+                count=0 #initiated local variable which will help in updating sc#@(p/n)(1/2/3/4)
+                while (datain.loc[i,'Octant']==1): #loop for checking appearance of velocity in octant
+                    count+=1 #updating count
+                    i+=1 #updating rows for checking continuity in a octant
+                    if(i>=total_size):
+                        break #this is because we have only rows upto index total size-1 and .loc func will unable to access the rows which actually does not exist
+                if(count>scp1):
+                    scp1=count #updating subsequent longest  count 
+                    cp1=1 #assigning value as 1 because of new longest subsequent count
+                    listp1.clear() #list has been cleared in case it has any previous element which shouldn't in case of if case
+                    listp1.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scp1):
+                    cp1+=1 #updating count value of subsequent longest count in case of same subs. long. count
+                    listp1.append(i-1) #storing index of upper bound(inclusive) which will help later
+                    ################
+                    #after this same code has been done for all the octanct type occurence so no comment needed till code line 166
+            elif(datain.loc[i,'Octant']==-1):
+                count=0
+                while (datain.loc[i,'Octant']==-1):
+                    count+=1 #explained in +ve 1 coode writing all step is same as that
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scn1):
+                    scn1=count
+                    cn1=1
+                    listn1.clear()
+                    listn1.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scn1):
+                    cn1+=1
+                    listn1.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==2):
+                count=0
+                while (datain.loc[i,'Octant']==2):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scp2):
+                    scp2=count
+                    cp2=1
+                    listp2.clear()
+                    listp2.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scp2):
+                    cp2+=1
+                    listp2.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==-2):
+                count=0
+                while (datain.loc[i,'Octant']==-2):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scn2):
+                    scn2=count
+                    cn2=1
+                    listn2.clear()
+                    listn2.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scn2):
+                    cn2+=1
+                    listn2.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==3):
+                count=0
+                while (datain.loc[i,'Octant']==3):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scp3):
+                    scp3=count
+                    cp3=1
+                    listp3.clear()
+                    listp3.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scp3):
+                    cp3+=1
+                    listp3.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==-3):
+                count=0
+                while (datain.loc[i,'Octant']==-3):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scn3):
+                    scn3=count
+                    cn3=1
+                    listn3.clear()
+                    listn3.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scn3):
+                    cn3+=1
+                    listn3.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==4):
+                count=0
+                while (datain.loc[i,'Octant']==4):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scp4):
+                    scp4=count
+                    cp4=1
+                    listp4.clear()
+                    listp4.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scp4):
+                    cp4+=1
+                    listp4.append(i-1) #storing index of upper bound(inclusive) which will help later
+            elif(datain.loc[i,'Octant']==-4):
+                count=0
+                while (datain.loc[i,'Octant']==-4):
+                    count+=1
+                    i+=1
+                    if(i>=total_size):
+                        break
+                if(count>scn4):
+                    scn4=count
+                    cn4=1
+                    listn4.clear()
+                    listn4.append(i-1) #storing index of upper bound(inclusive) which will help later
+                elif (count==scn4):
+                    cn4+=1
+                    listn4.append(i-1) #storing index of upper bound(inclusive) which will help later
+            i=i-1 #this substraction in the row has been done because of an extra addition of row while checking the repitition
+            #in the octant and in case of failing of repitition condition row will gone to another position already
+            #we know about loop condition after each iteration it increases its loop by doing one iteration operation
+            #so on adding 1 we will actually jump two row but we need to jump only one row
+            #1 has been substracted to have no skipped row to get correct result
+            ###till here done#######
+        datain.loc[0,'Longest Subsequence Length']=scp1 #assigning longest subsequent value corresponding to positive 1 octant value
+        datain.loc[0,'Count']=cp1 #assigning count of longest subs. value corresponding to +ve 1
+        datain.loc[1,'Longest Subsequence Length']=scn1
+        datain.loc[1,'Count']=cn1 #assigning count of longest subs. value corresponding to -ve 1
+        datain.loc[2,'Longest Subsequence Length']=scp2
+        datain.loc[2,'Count']=cp2 #assigning count of longest subs. value corresponding to +ve 2
+        datain.loc[3,'Longest Subsequence Length']=scn2
+        datain.loc[3,'Count']=cn2 #assigning count of longest subs. value corresponding to -ve 2
+        datain.loc[4,'Longest Subsequence Length']=scp3
+        datain.loc[4,'Count']=cp3 #assigning count of longest subs. value corresponding to +ve 3
+        datain.loc[5,'Longest Subsequence Length']=scn3
+        datain.loc[5,'Count']=cn3 #assigning count of longest subs. value corresponding to -ve 3
+        datain.loc[6,'Longest Subsequence Length']=scp4
+        datain.loc[6,'Count']=cp4 #assigning count of longest subs. value corresponding to +ve 4
+        datain.loc[7,'Longest Subsequence Length']=scn4
+        datain.loc[7,'Count']=cn4 #assigning count of longest subs. value corresponding to -ve 4
+
+
+        #till here done now working  for range values and indexe range of longest subsequence count
+        datain['']=np.nan #created blank column with no name as asked in the excel file
+        datain['Octant ###']=np.nan
+        datain['Longest Subsquence Length#']=np.nan
+        datain['Count#']=np.nan
+        #making desired matrix for +1
+        datain.loc[0,'Octant ###']='+1'
+        datain.loc[1,'Octant ###']='Time'
+        datain.loc[0,'Longest Subsquence Length#']=scp1
+        datain.loc[1,'Longest Subsquence Length#']='From'
+        datain.loc[0,'#']=cp1
+        datain.loc[1,'#']='To'
+        #making desired matrix for filling the time range of -1
+        datain.loc[2+cp1,'Octant ###']='-1'
+        datain.loc[2+cp1,'Longest Subsquence Length#']=scn1
+        datain.loc[2+cp1,'#']=cn1
+        datain.loc[3+cp1,'Octant ###']='Time'
+        datain.loc[3+cp1,'Longest Subsquence Length#']='From'
+        datain.loc[3+cp1,'#']='To'
+        #making desired matrix for filling the time range of +2
+        datain.loc[4+cp1+cn1,'Octant ###']='+2'
+        datain.loc[4+cp1+cn1,'Longest Subsquence Length#']=scp2
+        datain.loc[4+cp1+cn1,'#']=cp2
+        datain.loc[5+cp1+cn1,'Octant ###']='Time'
+        datain.loc[5+cp1+cn1,'Longest Subsquence Length#']='From'
+        datain.loc[5+cp1+cn1,'#']='To'
+        #making desired matrix for filling the time range of -2
+        datain.loc[6+cp1+cn1+cp2,'Octant ###']='-2'
+        datain.loc[6+cp1+cn1+cp2,'Longest Subsquence Length#']=scn2
+        datain.loc[6+cp1+cn1+cp2,'#']=cn2
+        datain.loc[7+cp1+cn1+cp2,'Octant ###']='Time'
+        datain.loc[7+cp1+cn1+cp2,'Longest Subsquence Length#']='From'
+        datain.loc[7+cp1+cn1+cp2,'#']='To'
+        #making desired matrix for filling the time range of +3
+        datain.loc[8+cp1+cn1+cp2+cn2,'Octant ###']='+3'
+        datain.loc[8+cp1+cn1+cp2+cn2,'Longest Subsquence Length#']=scp3
+        datain.loc[8+cp1+cn1+cp2+cn2,'#']=cp3
+        datain.loc[9+cp1+cn1+cp2+cn2,'Octant ###']='Time'
+        datain.loc[9+cp1+cn1+cp2+cn2,'Longest Subsquence Length#']='From'
+        datain.loc[9+cp1+cn1+cp2+cn2,'#']='To'
+        #making desired matrix for filling the time range of -3
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Octant ###']='-3'
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length#']=scn3
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'#']=cn3
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Octant ###']='Time'
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length#']='From'
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'#']='To'
+        #making desired matrix for filling the time range of +4
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Octant ###']='+4'
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length#']=scp4
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'#']=cp4
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Octant ###']='Time'
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length#']='From'
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'#']='To'
+        #making desired matrix for filling the time range of -4
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant ###']='-4'
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length#']=scn4
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'#']=cn4
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant ###']='Time'
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length#']='From'
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'#']='To'
+
+        ##############################################################################
+        #till here matrix done
+        #now working for matrix filling
+        for c in range (0,cp1):
+            datain.loc[2+c,'#']=datain.at[listp1[c],'T'] #upper limit time i.e. to
+            datain.loc[2+c,'Longest Subsquence Length#']=datain.at[1+listp1[c]-scp1,'T'] #lower limit time i. e. from
+        for c in range (0,cn1):
+            datain.loc[4+cp1+c,'#']=datain.at[listn1[c],'T'] #upper limit time i.e. to
+            datain.loc[4+cp1+c,'Longest Subsquence Length#']=datain.at[1+listn1[c]-scn1,'T'] #lower limit time i. e. from
+        for c in range (0,cp2):
+            datain.loc[6+cp1+cn1+c,'#']=datain.at[listp2[c],'T'] #upper limit time i.e. to
+            datain.loc[6+cp1+cn1+c,'Longest Subsquence Length#']=datain.at[1+listp2[c]-scp2,'T'] #lower limit time i. e. from
+        for c in range (0,cn2):
+            datain.loc[8+cp1+cn1+cp2+c,'#']=datain.at[listn2[c],'T'] #upper limit time i.e. to
+            datain.loc[8+cp1+cn1+cp2+c,'Longest Subsquence Length#']=datain.at[1+listn2[c]-scn2,'T'] #lower limit time i. e. from
+        for c in range (0,cp3):
+            datain.loc[10+cp1+cn1+cp2+cn2+c,'#']=datain.at[listp3[c],'T'] #upper limit time i.e. to
+            datain.loc[10+cp1+cn1+cp2+cn2+c,'Longest Subsquence Length#']=datain.at[1+listp3[c]-scp3,'T'] #lower limit time i. e. from
+        for c in range (0,cn3):
+            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'#']=datain.at[listn3[c],'T'] #upper limit time i.e. to
+            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'Longest Subsquence Length#']=datain.at[1+listn3[c]-scn3,'T'] #lower limit time i. e. from
+        for c in range (0,cp4):
+            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'#']=datain.at[listp4[c],'T'] #upper limit time i.e. to
+            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'Longest Subsquence Length#']=datain.at[1+listp4[c]-scp4,'T'] #lower limit time i. e. from
+        for c in range (0,cn4):
+            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'#']=datain.at[listn4[c],'T'] #upper limit time i.e. to
+            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Longest Subsquence Length#']=datain.at[1+listn4[c]-scn4,'T'] #lower limit time i. e. from
+       
+
+        
+
+
         os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07\output')
         datain.to_excel('4.6 cm_vel_octant_analysis_mod_5000.xlsx',index=False)# it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
