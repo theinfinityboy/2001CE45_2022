@@ -4,11 +4,20 @@ import pandas as pd
 import numpy as np
 import openpyxl
 import math
+from openpyxl import Workbook
+import openpyxl
+from openpyxl.styles import Border,Side
+
+from openpyxl import load_workbook
+from openpyxl.formatting.rule import Rule
+from openpyxl.styles.differential import DifferentialStyle
+from openpyxl.styles import PatternFill, Font
+import concurrent.futures
 #importing libraries
 
 from datetime import datetime
 start_time = datetime.now()
-os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07\input')
+os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07')
 
 #Help
 def check_octant(x,y,z):
@@ -29,11 +38,11 @@ def check_octant(x,y,z):
     if z<0 :
         return o*(-1)
         #octant value returned as o
-def octant_analysis(mod=5000):
+def octant_analysis(file, mod=5000):
 	#readymadefunction having argument as mod value
     #complete code has been written in this(major portion)
     try:
-        datain =  pd.read_excel('4.6 cm_vel.xlsx') #reading input csv file and storing in variable datain as data input
+        datain =  pd.read_excel("input\\"+file) #reading input csv file and storing in variable datain as data input
         total_size=datain['U'].size      #size stored in variable
         U_Avg=datain['U'].mean()
         V_Avg=datain['V'].mean()
@@ -43,13 +52,13 @@ def octant_analysis(mod=5000):
         datain['V_Avg']=np.nan
         datain['W_Avg']=None
         #blank column naming average has been created in the three different ways
-        datain.loc[0,'U_Avg']=U_Avg
-        datain.loc[0,'V_Avg']=V_Avg
-        datain.loc[0,'W_Avg']=W_Avg
+        datain.loc[0,'U_Avg']=round(U_Avg,3)
+        datain.loc[0,'V_Avg']=round(V_Avg,3)
+        datain.loc[0,'W_Avg']=round(W_Avg,3)
         #storing the values of avg valocity in 1st row or 0 indexed row
-        datain['U-U_Avg']=datain['U']-U_Avg
-        datain['V-V_Avg']=datain['V']-V_Avg
-        datain['W-W_Avg']=datain['W']-W_Avg
+        datain['U-U_Avg']=round(datain['U']-U_Avg, 3)
+        datain['V-V_Avg']=round(datain['V']-V_Avg, 3)
+        datain['W-W_Avg']=round(datain['W']-W_Avg, 3)
         #three more columns have been made and assigned value as V-Vavg.....corresponding name and corresponding columns
         datain['Octant']=np.nan #created a blank column named octant for which operation is to be done
         datain['']=np.nan
@@ -184,7 +193,7 @@ def octant_analysis(mod=5000):
         ##created required matrix 
         #now, writing program for finding rank of matrix....and filling matrix
         octant_name_id_mapping = {"1":"Internal outward interaction", "-1":"External outward interaction", "2":"External Ejection", "-2":"Internal Ejection", "3":"External inward interaction", "-3":"Internal inward interaction", "4":"Internal sweep", "-4":"External sweep"}
-         #this dictionary has been made to name the corresponding octant
+            #this dictionary has been made to name the corresponding octant
         datain.loc[noi+3,'Rank Octant 4']="1"
         datain.loc[noi+4,'Rank Octant 4']="-1"
         datain.loc[noi+5,'Rank Octant 4']="2"
@@ -756,93 +765,166 @@ def octant_analysis(mod=5000):
         datain.loc[1,'Octant ###']='Time'
         datain.loc[0,'Longest Subsquence Length#']=scp1
         datain.loc[1,'Longest Subsquence Length#']='From'
-        datain.loc[0,'#']=cp1
-        datain.loc[1,'#']='To'
+        datain.loc[0,'Count#']=cp1
+        datain.loc[1,'Count#']='To'
         #making desired matrix for filling the time range of -1
         datain.loc[2+cp1,'Octant ###']='-1'
         datain.loc[2+cp1,'Longest Subsquence Length#']=scn1
-        datain.loc[2+cp1,'#']=cn1
+        datain.loc[2+cp1,'Count#']=cn1
         datain.loc[3+cp1,'Octant ###']='Time'
         datain.loc[3+cp1,'Longest Subsquence Length#']='From'
-        datain.loc[3+cp1,'#']='To'
+        datain.loc[3+cp1,'Count#']='To'
         #making desired matrix for filling the time range of +2
         datain.loc[4+cp1+cn1,'Octant ###']='+2'
         datain.loc[4+cp1+cn1,'Longest Subsquence Length#']=scp2
-        datain.loc[4+cp1+cn1,'#']=cp2
+        datain.loc[4+cp1+cn1,'Count#']=cp2
         datain.loc[5+cp1+cn1,'Octant ###']='Time'
         datain.loc[5+cp1+cn1,'Longest Subsquence Length#']='From'
-        datain.loc[5+cp1+cn1,'#']='To'
+        datain.loc[5+cp1+cn1,'Count#']='To'
         #making desired matrix for filling the time range of -2
         datain.loc[6+cp1+cn1+cp2,'Octant ###']='-2'
         datain.loc[6+cp1+cn1+cp2,'Longest Subsquence Length#']=scn2
-        datain.loc[6+cp1+cn1+cp2,'#']=cn2
+        datain.loc[6+cp1+cn1+cp2,'Count#']=cn2
         datain.loc[7+cp1+cn1+cp2,'Octant ###']='Time'
         datain.loc[7+cp1+cn1+cp2,'Longest Subsquence Length#']='From'
-        datain.loc[7+cp1+cn1+cp2,'#']='To'
+        datain.loc[7+cp1+cn1+cp2,'Count#']='To'
         #making desired matrix for filling the time range of +3
         datain.loc[8+cp1+cn1+cp2+cn2,'Octant ###']='+3'
         datain.loc[8+cp1+cn1+cp2+cn2,'Longest Subsquence Length#']=scp3
-        datain.loc[8+cp1+cn1+cp2+cn2,'#']=cp3
+        datain.loc[8+cp1+cn1+cp2+cn2,'Count#']=cp3
         datain.loc[9+cp1+cn1+cp2+cn2,'Octant ###']='Time'
         datain.loc[9+cp1+cn1+cp2+cn2,'Longest Subsquence Length#']='From'
-        datain.loc[9+cp1+cn1+cp2+cn2,'#']='To'
+        datain.loc[9+cp1+cn1+cp2+cn2,'Count#']='To'
         #making desired matrix for filling the time range of -3
         datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Octant ###']='-3'
         datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length#']=scn3
-        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'#']=cn3
+        datain.loc[10+cp1+cn1+cp2+cn2+cp3,'Count#']=cn3
         datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Octant ###']='Time'
         datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Longest Subsquence Length#']='From'
-        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'#']='To'
+        datain.loc[11+cp1+cn1+cp2+cn2+cp3,'Count#']='To'
         #making desired matrix for filling the time range of +4
         datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Octant ###']='+4'
         datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length#']=scp4
-        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'#']=cp4
+        datain.loc[12+cp1+cn1+cp2+cn2+cp3+cn3,'Count#']=cp4
         datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Octant ###']='Time'
         datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Longest Subsquence Length#']='From'
-        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'#']='To'
+        datain.loc[13+cp1+cn1+cp2+cn2+cp3+cn3,'Count#']='To'
         #making desired matrix for filling the time range of -4
         datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant ###']='-4'
         datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length#']=scn4
-        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'#']=cn4
+        datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Count#']=cn4
         datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Octant ###']='Time'
         datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Longest Subsquence Length#']='From'
-        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'#']='To'
+        datain.loc[15+cp1+cn1+cp2+cn2+cp3+cn3+cp4,'Count#']='To'
 
         ##############################################################################
         #till here matrix done
         #now working for matrix filling
         for c in range (0,cp1):
-            datain.loc[2+c,'#']=datain.at[listp1[c],'T'] #upper limit time i.e. to
+            datain.loc[2+c,'Count#']=datain.at[listp1[c],'T'] #upper limit time i.e. to
             datain.loc[2+c,'Longest Subsquence Length#']=datain.at[1+listp1[c]-scp1,'T'] #lower limit time i. e. from
         for c in range (0,cn1):
-            datain.loc[4+cp1+c,'#']=datain.at[listn1[c],'T'] #upper limit time i.e. to
+            datain.loc[4+cp1+c,'Count#']=datain.at[listn1[c],'T'] #upper limit time i.e. to
             datain.loc[4+cp1+c,'Longest Subsquence Length#']=datain.at[1+listn1[c]-scn1,'T'] #lower limit time i. e. from
         for c in range (0,cp2):
-            datain.loc[6+cp1+cn1+c,'#']=datain.at[listp2[c],'T'] #upper limit time i.e. to
+            datain.loc[6+cp1+cn1+c,'Count#']=datain.at[listp2[c],'T'] #upper limit time i.e. to
             datain.loc[6+cp1+cn1+c,'Longest Subsquence Length#']=datain.at[1+listp2[c]-scp2,'T'] #lower limit time i. e. from
         for c in range (0,cn2):
-            datain.loc[8+cp1+cn1+cp2+c,'#']=datain.at[listn2[c],'T'] #upper limit time i.e. to
+            datain.loc[8+cp1+cn1+cp2+c,'Count#']=datain.at[listn2[c],'T'] #upper limit time i.e. to
             datain.loc[8+cp1+cn1+cp2+c,'Longest Subsquence Length#']=datain.at[1+listn2[c]-scn2,'T'] #lower limit time i. e. from
         for c in range (0,cp3):
-            datain.loc[10+cp1+cn1+cp2+cn2+c,'#']=datain.at[listp3[c],'T'] #upper limit time i.e. to
+            datain.loc[10+cp1+cn1+cp2+cn2+c,'Count#']=datain.at[listp3[c],'T'] #upper limit time i.e. to
             datain.loc[10+cp1+cn1+cp2+cn2+c,'Longest Subsquence Length#']=datain.at[1+listp3[c]-scp3,'T'] #lower limit time i. e. from
         for c in range (0,cn3):
-            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'#']=datain.at[listn3[c],'T'] #upper limit time i.e. to
+            datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'Count#']=datain.at[listn3[c],'T'] #upper limit time i.e. to
             datain.loc[12+cp1+cn1+cp2+cn2+cp3+c,'Longest Subsquence Length#']=datain.at[1+listn3[c]-scn3,'T'] #lower limit time i. e. from
         for c in range (0,cp4):
-            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'#']=datain.at[listp4[c],'T'] #upper limit time i.e. to
+            datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'Count#']=datain.at[listp4[c],'T'] #upper limit time i.e. to
             datain.loc[14+cp1+cn1+cp2+cn2+cp3+cn3+c,'Longest Subsquence Length#']=datain.at[1+listp4[c]-scp4,'T'] #lower limit time i. e. from
         for c in range (0,cn4):
-            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'#']=datain.at[listn4[c],'T'] #upper limit time i.e. to
+            datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Count#']=datain.at[listn4[c],'T'] #upper limit time i.e. to
             datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Longest Subsquence Length#']=datain.at[1+listn4[c]-scn4,'T'] #lower limit time i. e. from
-       
+        
+        datain.insert(32,"",np.nan,True)
+        datain.insert(43,"",np.nan,True)
+        datain.insert(47,"",np.nan,True)
+
+        datain.rename(columns={'remove_mod':''}, inplace=True)
+        datain.rename(columns={'remove0':''}, inplace=True)
+        datain.rename(columns={'remove1':'Overall transition Count'}, inplace=True)
+        datain.rename(columns={'remove2':''}, inplace=True)
+        datain.rename(columns={'remove3':''}, inplace=True)
+        datain.rename(columns={'remove4':''}, inplace=True)
+        datain.rename(columns={'remove5':''}, inplace=True)
+        datain.rename(columns={'remove6':''}, inplace=True)
+        datain.rename(columns={'remove7':''}, inplace=True)
+        datain.rename(columns={'remove8':''}, inplace=True)
+        datain.rename(columns={'remove9':''}, inplace=True)
 
         
+        file_name = os.path.basename(file)
 
-
-        os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07\output')
-        datain.to_excel('4.6 cm_vel_octant_analysis_mod_5000.xlsx',index=False)# it makes a csv file with the name given in 'quote'
+        # file name without extension
+        name = os.path.splitext(file_name)[0]
+        datain.to_excel('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx',index=False) # it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
+        # total_count = datain['Longest Subsquence Length#'].size
+        from openpyxl.styles import Border,Side
+        workbook= openpyxl.load_workbook('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx')
+        worksheet = workbook['Sheet1']
+        top = Side(border_style='thin', color="000000")
+        bottom = Side(border_style='thin', color="000000")
+        right = Side(border_style='thin', color="000000")
+        left = Side(border_style='thin', color="000000")
+        border = Border(top=top, bottom = bottom, right=right, left=left)
+        grid1=worksheet['N1':f'AF{noi+2}']
+        for cell in grid1:
+            for x in cell:
+                x.border=border
+        grid1 = worksheet[f'AC{noi+4}':f'AE{noi+12}']
+        for cell in grid1:
+            for x in cell:
+                x.border=border
+        grid1 = worksheet[f'AI2':f'AQ10']
+        for cell in grid1:
+            for x in cell:
+                x.border=border
+        ex = 0
+        while ex<noi:
+            grid1 = worksheet[f'AI{16+13*ex}':f'AQ{24+13*ex}']
+            for cell in grid1:
+                for x in cell:
+                    x.border=border
+            ex =ex+1
+        grid1 = worksheet[f'AS1':f'AU9']
+        for cell in grid1:
+            for x in cell:
+                x.border=border
+        grid1 = worksheet[f'AW1':f'AY{17+cp1+cn1+cp2+cn2+cp3+cn3+cp4+cn4}']
+        for cell in grid1:
+            for x in cell:
+                x.border=border
+
+        fillcolur = PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type='solid')
+        font = Font(bold=False, color='000000')
+        dxf=DifferentialStyle(font=font ,fill=fillcolur)
+        rule = Rule(type='cellIs', operator='equal',formula=[1,1], dxf=dxf)
+        for i in range(8):
+            grid_cell = f'$AJ${3+i}:$AQ${3+i}'
+            rule1 = Rule(type='cellIs',operator='equal', dxf=dxf, formula=["=MAX("+grid_cell+")"])
+            worksheet.conditional_formatting.add(grid_cell, rule1)
+
+        for q in range(noi):
+            for i in range(8):
+                grid_cell = f'$AJ${17+13*q+i}:$AQ${17+13*q+i}'
+                rule1 = Rule(type='cellIs',operator='equal', dxf=dxf, formula=["=MAX("+grid_cell+")"])
+                worksheet.conditional_formatting.add(grid_cell, rule1)
+        
+        
+        for i in range(noi+1):
+            worksheet.conditional_formatting.add(f'W{2+i}:AD{2+i}', rule)
+        
+        workbook.save('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx')
     except FileNotFoundError:
         print("Hey...file inputed by user is not found")
 
@@ -865,8 +947,13 @@ else:
 
 
 mod=5000
-octant_analysis(mod)
 
+path = r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut07'
+dir_list = os.listdir(path+'\input')
+for file in dir_list:
+    octant_analysis( file, mod)
+    # file name with extension
+    
 
 
 
