@@ -3,6 +3,8 @@ import math
 #importing library 
 from datetime import datetime
 start_time = datetime.now()
+os.chdir(r'C:\Users\pc\Documents\GitHub\2001CE45_2022\tut08')
+#current working directory
 
 os.system('cls')
 #clearing screen
@@ -41,9 +43,14 @@ def team_ind_list():
 
         return team_ind
 
+def get_fall(element):
+    fall_at = int(element[:element.index('-')])
+    return(fall_at)
+
 def pak_innings_scorecard(pak_batter_stats, pak_score, pak_fall_of_wickets, ind_bowler_stats, pak_power_play_runs):
-    
+#making scorecard of team pakistan
     with open('Scorecard.txt','w') as scorecard:
+	#opened scorecard txt file in write mode
         scorecard.write(f"{'## PAKISTAN INNINGS': <18} {pak_score: <10}\n")
         scorecard.write(f"\n{'Batter': <23}{' ': <45}{'R': ^5}{'B': ^5}{'4s': ^5}{'6s': ^5}{'SR': >7}")
         for batter in pak_batter_stats:
@@ -331,6 +338,9 @@ def pak_innings(team_pak, team_ind):
 
 def ind_innings_scorecard(ind_batter_stats, ind_score, ind_fall_of_wickets, pak_bowler_stats, ind_power_play_runs ):
     with open('Scorecard.txt','a') as scorecard:
+		#making scorecard of team pakistan
+		#opened scorecard txt file in write mode
+
         scorecard.write(f"\n\n{'## INDIA INNINGS': <18} {ind_score: <10}\n")
         scorecard.write(f"\n{'Batter': <23}{' ': <45}{'R': ^5}{'B': ^5}{'4s': ^5}{'6s': ^5}{'SR': >7}")
         for batter in ind_batter_stats:
@@ -633,6 +643,8 @@ else:
 
 
 scorecard()
+
+print('Output file has been made check now.....')
 
 #This shall be the last lines of the code.
 end_time = datetime.now()
