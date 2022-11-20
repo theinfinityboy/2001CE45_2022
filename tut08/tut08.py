@@ -1,6 +1,25 @@
-
+import os
+import math
+#importing library 
 from datetime import datetime
 start_time = datetime.now()
+
+os.system('cls')
+#clearing screen
+def team_pak_list():
+	#making playing 11 list
+    with open('teams.txt') as team_file:
+        str_team_pak=''
+        for line in team_file:
+            if line[0]=='P':
+                str_team_pak=line
+
+        start_index_pak=str_team_pak.find(':')
+        pak_team_xi=str_team_pak[start_index_pak+2:len(str_team_pak)-1]
+        team_pak=pak_team_xi.split(', ')
+
+        return team_pak
+
 
 #Help
 def scorecard():
