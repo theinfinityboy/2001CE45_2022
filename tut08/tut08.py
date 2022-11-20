@@ -617,13 +617,11 @@ def ind_innings(team_pak, team_ind):
     #saving ind innings
     ind_innings_scorecard(ind_batter_stats, ind_score, ind_fall_of_wickets, pak_bowler_stats, ind_power_play_runs )
 
-
-#Help
 def scorecard():
-	pass
-
-
-###Code
+    team_pak = team_pak_list()
+    team_ind = team_ind_list()
+    pak_innings(team_pak, team_ind)
+    ind_innings(team_pak, team_ind)
 
 from platform import python_version
 ver = python_version()
@@ -635,11 +633,6 @@ else:
 
 
 scorecard()
-
-
-
-
-
 
 #This shall be the last lines of the code.
 end_time = datetime.now()
