@@ -845,10 +845,12 @@ def octant_analysis(file, mod=5000):
             datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Count#']=datain.at[listn4[c],'T'] #upper limit time i.e. to
             datain.loc[16+cp1+cn1+cp2+cn2+cp3+cn3+cp4+c,'Longest Subsquence Length#']=datain.at[1+listn4[c]-scn4,'T'] #lower limit time i. e. from
         
+        # Insering empty columns at desired positions
         datain.insert(32,"",np.nan,True)
         datain.insert(43,"",np.nan,True)
         datain.insert(47,"",np.nan,True)
 
+        # Renaming columnss
         datain.rename(columns={'remove_mod':''}, inplace=True)
         datain.rename(columns={'remove0':''}, inplace=True)
         datain.rename(columns={'remove1':'Overall transition Count'}, inplace=True)
@@ -866,64 +868,78 @@ def octant_analysis(file, mod=5000):
 
         # file name without extension
         name = os.path.splitext(file_name)[0]
+        # Saving file
         datain.to_excel('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx',index=False) # it makes a csv file with the name given in 'quote'
         #index = false do not make make columns for index values as we have no requirement of it in this case
         # total_count = datain['Longest Subsquence Length#'].size
+
+        # Imporing libraries
         from openpyxl.styles import Border,Side
+        # load workbook
         workbook= openpyxl.load_workbook('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx')
         worksheet = workbook['Sheet1']
+        # Creating border style
         top = Side(border_style='thin', color="000000")
         bottom = Side(border_style='thin', color="000000")
         right = Side(border_style='thin', color="000000")
         left = Side(border_style='thin', color="000000")
         border = Border(top=top, bottom = bottom, right=right, left=left)
+
+        # Applying border to ranges
         grid1=worksheet['N1':f'AF{noi+2}']
         for cell in grid1:
             for x in cell:
                 x.border=border
+        # Applying border to ranges
         grid1 = worksheet[f'AC{noi+4}':f'AE{noi+12}']
         for cell in grid1:
             for x in cell:
                 x.border=border
+
+        # Applying border to ranges
         grid1 = worksheet[f'AI2':f'AQ10']
         for cell in grid1:
             for x in cell:
                 x.border=border
         ex = 0
+        # Applying border to ranges
         while ex<noi:
             grid1 = worksheet[f'AI{16+13*ex}':f'AQ{24+13*ex}']
             for cell in grid1:
                 for x in cell:
                     x.border=border
             ex =ex+1
+        # Applying border to ranges
         grid1 = worksheet[f'AS1':f'AU9']
         for cell in grid1:
             for x in cell:
                 x.border=border
+        # Applying border to ranges
         grid1 = worksheet[f'AW1':f'AY{17+cp1+cn1+cp2+cn2+cp3+cn3+cp4+cn4}']
         for cell in grid1:
             for x in cell:
                 x.border=border
-
+        # Applying background colors 
         fillcolur = PatternFill(start_color='FFFF00', end_color='FFFF00', fill_type='solid')
         font = Font(bold=False, color='000000')
         dxf=DifferentialStyle(font=font ,fill=fillcolur)
         rule = Rule(type='cellIs', operator='equal',formula=[1,1], dxf=dxf)
+        # Highlighting cell ranges
         for i in range(8):
             grid_cell = f'$AJ${3+i}:$AQ${3+i}'
             rule1 = Rule(type='cellIs',operator='equal', dxf=dxf, formula=["=MAX("+grid_cell+")"])
             worksheet.conditional_formatting.add(grid_cell, rule1)
-
+        # Highlighting cell ranges
         for q in range(noi):
             for i in range(8):
                 grid_cell = f'$AJ${17+13*q+i}:$AQ${17+13*q+i}'
                 rule1 = Rule(type='cellIs',operator='equal', dxf=dxf, formula=["=MAX("+grid_cell+")"])
                 worksheet.conditional_formatting.add(grid_cell, rule1)
         
-        
+        # Adding highlights
         for i in range(noi+1):
             worksheet.conditional_formatting.add(f'W{2+i}:AD{2+i}', rule)
-        
+        # Saving workbook
         workbook.save('output\\'+name+ f'_octant_analysis_mod_{mod}.xlsx')
     except FileNotFoundError:
         print("Hey...file inputed by user is not found")
