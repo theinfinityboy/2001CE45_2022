@@ -43,7 +43,7 @@ def octant_analysis(file, mod=5000):
     #complete code has been written in this(major portion)
     try:
         datain =  pd.read_excel("input\\"+file) #reading input csv file and storing in variable datain as data input
-        total_size=datain['U'].size      #size stored in variable
+        total_size=datain['U'].size  #size stored in variable
         U_Avg=datain['U'].mean()
         V_Avg=datain['V'].mean()
         W_Avg=datain['W'].mean()
